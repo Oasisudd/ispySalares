@@ -30,10 +30,10 @@
             flex-direction: column;
         }
 
-        /* HUD Superior */
+        /* HUD Superior más compacto para pantallas de 13" */
         #hud {
             background-color: var(--azul-roca);
-            padding: 15px 25px;
+            padding: 10px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -43,6 +43,7 @@
 
         #hud h2 {
             color: #ffffff;
+            font-size: 1.3rem;
             font-weight: 600;
             letter-spacing: 1px;
         }
@@ -50,14 +51,14 @@
         .hud-panel {
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 15px;
         }
 
         .stat-box {
             background: rgba(0, 0, 0, 0.4);
-            padding: 8px 15px;
+            padding: 6px 12px;
             border-radius: 6px;
-            font-size: 1.2rem;
+            font-size: 1.05rem;
             font-weight: bold;
             border: 1px solid var(--ocre-tierra);
         }
@@ -73,13 +74,13 @@
             animation: pulse 1s infinite;
         }
 
-        /* Lista de Objetivos Inferior */
+        /* Lista de Objetivos Inferior más compacta */
         #objectives-list {
             display: flex;
-            gap: 15px;
+            gap: 12px;
             overflow-x: auto;
             background-color: var(--azul-oscuro);
-            padding: 12px 25px;
+            padding: 8px 20px;
             border-bottom: 1px solid rgba(255,255,255,0.1);
         }
 
@@ -87,12 +88,13 @@
             display: flex;
             align-items: center;
             background: rgba(255,255,255,0.05);
-            padding: 6px 14px;
+            padding: 4px 12px;
             border-radius: 20px;
-            gap: 10px;
+            gap: 8px;
             border: 2px solid transparent;
             transition: all 0.3s;
             opacity: 0.7;
+            font-size: 0.9rem;
         }
 
         .obj-item.completed {
@@ -102,8 +104,8 @@
         }
 
         .obj-item img {
-            width: 32px;
-            height: 32px;
+            width: 28px;
+            height: 28px;
             object-fit: contain;
             background: #ffffff;
             border-radius: 50%;
@@ -119,24 +121,26 @@
             color: var(--turquesa-agua);
         }
 
-        /* Contenedor del Mapa (Scroll Horizontal) */
+        /* Contenedor del Mapa con Scroll Mejorado */
         #game-viewport {
             flex: 1;
             overflow-x: auto;
-            overflow-y: hidden;
+            overflow-y: auto; /* Permite un leve ajuste vertical si la pantalla es muy pequeña */
             position: relative;
             background: #111;
-            white-space: nowrap;
         }
 
         #map-container {
             position: relative;
             display: inline-block;
             height: 100%;
+            min-height: 650px; /* Forzamos un tamaño mínimo ideal para mantener la escala panorámica */
         }
 
         #game-map {
             height: 100%;
+            min-height: 650px;
+            width: auto;
             display: block;
         }
 
@@ -173,20 +177,20 @@
             align-items: center;
             z-index: 100;
             text-align: center;
-            padding: 30px;
+            padding: 20px;
         }
 
         .hidden { display: none !important; }
 
-        h1 { font-size: 2.8rem; margin-bottom: 10px; color: var(--turquesa-agua); text-transform: uppercase; letter-spacing: 2px; }
-        .subtitle { font-size: 1.2rem; color: var(--ocre-tierra); margin-bottom: 30px; font-weight: bold; }
+        h1 { font-size: 2.5rem; margin-bottom: 10px; color: var(--turquesa-agua); text-transform: uppercase; letter-spacing: 2px; }
+        .subtitle { font-size: 1.1rem; color: var(--ocre-tierra); margin-bottom: 25px; font-weight: bold; }
 
         .btn {
             background-color: var(--turquesa-agua);
             color: var(--azul-oscuro);
             border: none;
-            padding: 14px 45px;
-            font-size: 1.3rem;
+            padding: 12px 40px;
+            font-size: 1.2rem;
             font-weight: bold;
             border-radius: 4px;
             cursor: pointer;
@@ -200,22 +204,22 @@
             transform: translateY(-2px);
         }
 
-        /* DISEÑO DEL CARRUSEL (PANTALLA FINAL) */
+        /* DISEÑO DEL CARRUSEL */
         .carousel-wrapper {
             position: relative;
             width: 100%;
-            max-width: 650px;
+            max-width: 600px;
             background: var(--azul-roca);
             border: 2px solid var(--ocre-tierra);
             border-radius: 8px;
-            padding: 30px 60px;
-            margin-bottom: 30px;
+            padding: 20px 50px;
+            margin-bottom: 20px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
         .carousel-container {
             overflow: hidden;
-            min-height: 240px;
+            min-height: 220px;
         }
 
         .carousel-slide {
@@ -231,29 +235,29 @@
 
         .slide-img-container {
             background: #ffffff;
-            padding: 10px;
+            padding: 8px;
             border-radius: 8px;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             border: 2px solid var(--ocre-tierra);
             display: inline-block;
         }
 
         .carousel-slide img {
-            height: 90px;
+            height: 80px;
             object-fit: contain;
         }
 
         .slide-title {
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             color: var(--turquesa-agua);
-            margin-bottom: 5px;
+            margin-bottom: 4px;
         }
 
         .slide-status {
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             font-weight: bold;
-            margin-bottom: 12px;
-            padding: 3px 12px;
+            margin-bottom: 10px;
+            padding: 2px 10px;
             border-radius: 12px;
             display: inline-block;
         }
@@ -262,14 +266,13 @@
         .status-missed { background-color: rgba(255, 123, 172, 0.2); color: var(--rosa-fauna); }
 
         .slide-desc {
-            font-size: 1.05rem;
-            line-height: 1.5;
+            font-size: 0.95rem;
+            line-height: 1.45;
             color: #dddddd;
             white-space: normal;
             text-align: justify;
         }
 
-        /* Flechas del Carrusel */
         .carousel-arrow {
             position: absolute;
             top: 50%;
@@ -277,7 +280,7 @@
             background: transparent;
             border: none;
             color: var(--turquesa-agua);
-            font-size: 2.5rem;
+            font-size: 2.2rem;
             cursor: pointer;
             padding: 10px;
             transition: color 0.2s;
@@ -287,7 +290,6 @@
         .arrow-left { left: 10px; }
         .arrow-right { right: 10px; }
 
-        /* Animaciones */
         @keyframes pulse {
             0% { opacity: 1; }
             50% { opacity: 0.8; }
@@ -296,7 +298,7 @@
 
         @keyframes scaleUp {
             0% { width: 0; height: 0; opacity: 0; }
-            100% { width: 55px; height: 55px; opacity: 1; }
+            100% { width: 50px; height: 50px; opacity: 1; }
         }
 
         @keyframes fadeIn {
@@ -311,7 +313,7 @@
         <h2>PROYECTO OASIS</h2>
         <div class="hud-panel">
             <div id="timer" class="stat-box">Tiempo: 30s</div>
-            <div id="score" class="stat-box">Encontrados: 0 / 11</div>
+            <div id="score" class="stat-box">Encontrados: 0 / 12</div>
         </div>
     </div>
 
@@ -334,7 +336,7 @@
         </div>
         <div class="obj-item" id="obj-espatulas">
             <img src="iSpyJUego-02.png" alt="Espátulas">
-            <span>Espátulas: <span class="obj-count" id="count-espatulas">0/6</span></span>
+            <span>Espátulas: <span class="obj-count" id="count-espatulas">0/7</span></span>
         </div>
     </div>
 
@@ -347,7 +349,7 @@
     <div id="start-screen" class="overlay-screen">
         <h1>Explora Maricunga</h1>
         <div class="subtitle">Desafío Express: 30 Segundos</div>
-        <p style="max-width: 550px; line-height: 1.6; margin-bottom: 30px; color: #b3b9c9;">
+        <p style="max-width: 500px; line-height: 1.5; margin-bottom: 25px; color: #b3b9c9; font-size: 1rem;">
             Desplázate horizontalmente por el salar. Encuentra los instrumentos científicos y las especies nativas antes de que se agote el tiempo.
         </p>
         <button class="btn" onclick="startGame()">Comenzar Muestreo</button>
@@ -355,7 +357,7 @@
 
     <div id="end-screen" class="overlay-screen hidden">
         <h1 id="end-title">Muestreo Terminado</h1>
-        <p id="end-result" class="subtitle" style="margin-bottom: 20px;">Encontraste 0 de 11 objetos.</p>
+        <p id="end-result" class="subtitle" style="margin-bottom: 15px;">Encontraste 0 de 12 objetos.</p>
         
         <div class="carousel-wrapper">
             <button class="carousel-arrow arrow-left" onclick="moveCarousel(-1)">&#10094;</button>
@@ -369,7 +371,6 @@
     </div>
 
     <script>
-        // Coordenadas relativas (%) para los 11 elementos en iSpyJUego-01.png
         const targetsConfig = [
             { id: 1, type: 'trombolitos', left: 74.5, top: 46.0, size: 5 },
             { id: 2, type: 'lagartijas', left: 20.3, top: 82.5, size: 4 },
@@ -381,10 +382,10 @@
             { id: 8, type: 'espatulas', left: 51.2, top: 93.0, size: 3 },
             { id: 9, type: 'espatulas', left: 73.5, top: 34.2, size: 3 },
             { id: 10, type: 'espatulas', left: 83.1, top: 53.5, size: 3 },
-            { id: 11, type: 'espatulas', left: 95.2, top: 32.1, size: 3 }
+            { id: 11, type: 'espatulas', left: 95.2, top: 32.1, size: 3 },
+            { id: 12, type: 'espatulas', left: 67.2, top: 58.0, size: 3 }
         ];
 
-        // Datos científicos explicativos para la revisión final
         const itemsLibrary = {
             trombolitos: { name: "Trombolitos", img: "iSpyJUego-05.png", desc: "Estructuras organo-sedimentarias complejas formadas por la actividad de comunidades de cianobacterias. Son verdaderos fósiles vivientes claves para estudiar las adaptaciones extremas y los orígenes biológicos en los salares de la Puna." },
             lagartijas: { name: "Lagartijas Nativas", img: "iSpyJUego-03.png", desc: "Reptiles del género Liolaemus adaptados a la escasez hídrica, alta radiación ultravioleta y fuertes oscilaciones térmicas diarias. Cumplen un rol vital controlando las poblaciones de insectos en el ecosistema." },
@@ -400,8 +401,8 @@
         let currentSlideIdx = 0;
         
         const counts = { trombolitos: 0, lagartijas: 0, tapete: 0, cuadrante: 0, espatulas: 0 };
-        const maxCounts = { trombolitos: 1, lagartijas: 2, tapete: 1, cuadrante: 1, espatulas: 6 };
-        const totalItems = 11;
+        const maxCounts = { trombolitos: 1, lagartijas: 2, tapete: 1, cuadrante: 1, espatulas: 7 };
+        const totalItems = 12;
 
         function initTargets() {
             const container = document.getElementById('map-container');
@@ -543,7 +544,7 @@
             document.getElementById('count-lagartijas').innerText = "0/2";
             document.getElementById('count-tapete').innerText = "0/1";
             document.getElementById('count-cuadrante').innerText = "0/1";
-            document.getElementById('count-espatulas').innerText = "0/6";
+            document.getElementById('count-espatulas').innerText = "0/7";
 
             document.getElementById('end-screen').classList.add('hidden');
             startGame();
