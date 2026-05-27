@@ -123,7 +123,7 @@
             color: var(--turquesa-agua);
         }
 
-        /* Contenedor Estricto para Pantallas de 13 pulgadas */
+        /* Contenedor Fijo anti-scroll vertical */
         #game-viewport {
             flex: 1;
             overflow-x: auto;
@@ -145,7 +145,7 @@
             display: block;
         }
 
-        /* Hitboxes Circulares de Precisión */
+        /* Hitboxes Circulares Ajustadas */
         .click-target {
             position: absolute;
             cursor: pointer;
@@ -153,8 +153,6 @@
             z-index: 5;
             transform: translate(-50%, -50%);
             aspect-ratio: 1 / 1;
-            /* Descomenta la línea de abajo si necesitas ver los círculos rojos de depuración en terreno */
-            /* border: 1.5px dashed red; background: rgba(255,0,0,0.15); */
         }
 
         .found-marker {
@@ -210,7 +208,7 @@
             transform: translateY(-2px);
         }
 
-        /* DISEÑO DEL CARRUSEL INTERACTIVO */
+        /* CARRUSEL */
         .carousel-wrapper {
             position: relative;
             width: 100%;
@@ -377,23 +375,23 @@
     </div>
 
     <script>
-        // COORDENADAS RECALCULADAS EN BASE A LA PROPORCIÓN FIJA DEL LIENZO
+        // Coordenadas milimétricas recalculadas para pantalla fija
         const targetsConfig = [
-            { id: 1, type: 'trombolitos', left: 74.5, top: 46.5, size: 5.5 },
-            { id: 2, type: 'lagartijas', left: 20.3, top: 82.5, size: 5.0 }, // Lagartija abajo izq
-            { id: 3, type: 'lagartijas', left: 30.2, top: 49.5, size: 5.0 }, // Lagartija arbusto hombre rojo
-            { id: 4, type: 'lagartijas', left: 52.5, top: 40.0, size: 5.0 }, // Lagartija orilla laguna
-            { id: 5, type: 'tapete', left: 58.2, top: 66.5, size: 5.5 },       // Espátula con muestra Mat vertical
-            { id: 6, type: 'cuadrante', left: 88.5, top: 74.5, size: 6.5 },    // Cuadrante botánico abajo der
+            { id: 1, type: 'trombolitos', left: 80.5, top: 60.0, size: 6.0 },
+            { id: 2, type: 'lagartijas', left: 21.0, top: 83.0, size: 5.0 },
+            { id: 3, type: 'lagartijas', left: 30.5, top: 54.0, size: 5.0 },
+            { id: 4, type: 'lagartijas', left: 55.5, top: 46.0, size: 5.0 },
+            { id: 5, type: 'tapete', left: 62.2, top: 71.5, size: 5.5 },
+            { id: 6, type: 'cuadrante', left: 95.0, top: 76.5, size: 6.5 },
             
-            // Las 7 Espátulas de Muestreo (Hitboxes del 5% optimizados para clics limpios)
-            { id: 7, type: 'espatulas', left: 23.4, top: 59.2, size: 5.0 },  // Arbusto medio-izq
-            { id: 8, type: 'espatulas', left: 36.0, top: 39.5, size: 5.0 },  // Bajo vicuñas fondo (tu círculo rojo izquierdo)
-            { id: 9, type: 'espatulas', left: 59.2, top: 57.5, size: 5.0 },  // Sobre mancha naranja (tu círculo rojo derecho)
-            { id: 10, type: 'espatulas', left: 38.6, top: 90.1, size: 5.0 }, // Suelo, izquierda del investigador rojo
-            { id: 11, type: 'espatulas', left: 51.2, top: 93.0, size: 5.0 }, // Abajo centro con puntitos verdes
-            { id: 12, type: 'espatulas', left: 73.5, top: 34.2, size: 5.0 }, // Orilla derecha laguna
-            { id: 13, type: 'espatulas', left: 83.1, top: 53.5, size: 5.0 }  // Derecha, en el parche de sal blanco
+            // Las 7 Espátulas de Muestreo (Calibradas y con hitboxes agrandados)
+            { id: 7, type: 'espatulas', left: 23.4, top: 59.2, size: 5.0 }, 
+            { id: 8, type: 'espatulas', left: 36.0, top: 41.5, size: 6.5 },  // RECALIBRADA (Bajo vicuñas fondo)
+            { id: 9, type: 'espatulas', left: 59.0, top: 61.5, size: 6.5 },  // RECALIBRADA (Sobre muestra naranja)
+            { id: 10, type: 'espatulas', left: 41.3, top: 90.5, size: 5.0 }, 
+            { id: 11, type: 'espatulas', left: 54.5, top: 93.5, size: 5.0 }, 
+            { id: 12, type: 'espatulas', left: 89.8, top: 57.5, size: 5.0 }, 
+            { id: 13, type: 'espatulas', left: 76.8, top: 34.5, size: 5.0 }  
         ];
 
         const itemsLibrary = {
@@ -467,6 +465,7 @@
             marker.className = 'found-marker';
             marker.style.left = target.left + '%';
             marker.style.top = target.top + '%';
+            marker.style.width = target.size + '%';
             container.appendChild(marker);
 
             e.target.style.display = 'none';
