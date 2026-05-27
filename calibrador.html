@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OASIS - Calibrador de Ecosistema</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
+        :root {
+            --turquesa-agua: #00a99d;
+            --ocre-tierra: #a98743;
+            --azul-roca: #343b4d;
+            --azul-oscuro: #1e222d;
+        }
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: var(--azul-oscuro);
+            color: #ffffff;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+        }
+
+        /* Área de simulación del Juego (Izquierda) */
+        #game-simulator {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            border-right: 2px solid var(--ocre-tierra);
+            overflow: hidden;
+        }
+
+        #hud {
+            background-color: var(--azul-roca);
+            padding: 10px 20px;
+            border-bottom: 3px solid var(--ocre-tierra);
+            flex-shrink: 0;
+            font-size: 0.9rem;
+        }
+
+        #objectives-list {
+            display: flex;
+            gap: 12px;
+            background-color: var(--azul-oscuro);
+            padding: 8px 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            flex-shrink: 0;
+            font-size: 0.8rem;
+        }
+        .obj-mock { background: rgba(255,255,255,0.05); padding: 4px 10px; border-radius: 20px; border: 1px solid #444; }
+
+        #game-viewport {
+            flex: 1;
+            overflow-x: auto;
+            overflow-y: hidden;
+            position: relative;
+            background: #111;
+        }
+        #map-container { position: relative; display: inline-block; height: 100%; }
+        #game-map { height: 100%; width: auto; display: block; cursor: crosshair; }
+
+        /* Marcadores de Calibración */
+        .cal-marker {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            border: 2px solid #e67e22;
+            background: rgba(230, 126, 34, 0.4);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: bold;
+            color: white;
+            text-shadow: 1px 1px 2px black;
+        }
+
+        /* Panel de Control (Derecha) */
+        #control-panel {
+            width: 380px;
+            background-color: #252a36;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            overflow-y: auto;
+            flex-shrink: 0;
+        }
+        h3 { color: var(--turquesa-agua); border-bottom: 1px solid #444; padding-bottom: 5px; }
+        
+        .instruction { font-size: 0.85rem; color: #b3b9c9; line-height: 1.4; }
+
+        .target-selector {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            max-height: 300px;
+            overflow-y: auto;
+            background: rgba(0,0,0,0.2);
+            padding: 8px;
+            border-radius: 4px;
+        }
+        .target-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 6px;
+            background: #2e3545;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            border: 1px solid transparent;
+        }
+        .target-row:hover { background: #384154; }
+        .target-row.active { border-color: var(--turquesa-agua); background: rgba(0, 169, 157, 0.2); }
+        .coord-display { font-family: monospace; color: #e67e22; font-weight: bold; }
+
+        textarea {
+            width: 100%;
+            height: 220px;
+            background: #111;
+            color: #2ecc71;
+            border: 1px solid #444;
+            padding: 8px;
+            font-family: monospace;
+            font-size: 0.75rem;
+            resize: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="game-simulator">
+        <div id="hud"><h2>PROYECTO OASIS (VISTA CALIBRACIÓN)</h2></div>
+        <div id="objectives-list">
+            <div class="obj-mock">Trombolitos: 0/1</div>
+            <div class="obj-mock">Lagartijas: 0/3</div>
+            <div class="obj-mock">Muestra Mat: 0/1</div>
+            <div class="obj-mock">Cuadrante: 0/1</div>
+            <div class="obj-mock">Espátulas: 0/7</div>
+        </div>
+        <div id="game-viewport">
+            <div id="map-container">
+                <img id="game-map" src="iSpyJUego-01.png" alt="Salar de Maricunga" onclick="mapClicked(event)">
+                </div>
+        </div>
+    </div>
+
+    <div id="control-panel">
+        <h3>Mapeador de Coordenadas</h3>
+        <p class="instruction">1. Selecciona un objeto de la lista.<br>2. Haz clic en su ubicación real dentro del mapa de la izquierda.</p>
+        
+        <div class="target-selector" id="selector-list">
+            </div>
+
+        <h3>Código Generado</h3>
+        <p class="instruction">Copia este bloque de datos directamente en tu archivo index.html final:</p>
+        <textarea id="output-code" readonly onclick="this.select()"></textarea>
+    </div>
+
+    <script>
+        // Estructura de datos limpia para calibrar los 13 objetos
+        const targets = [
+            { id: 1, label: "Trombolito 1", type: "trombolitos", left: 74.5, top: 46.0, size: 5.5 },
+            { id: 2, label: "Lagartija 1 (Abajo Izq)", type: "lagartijas", left: 20.3, top: 82.5, size: 5.0 },
+            { id: 3, label: "Lagartija 2 (Centro)", type: "lagartijas", left: 30.2, top: 49.5, size: 5.0 },
+            { id: 4, label: "Lagartija 3 (Orilla Agua)", type: "lagartijas", left: 52.5, top: 40.0, size: 5.0 },
+            { id: 5, label: "Muestra Mat 1", type: "tapete", left: 58.2, top: 66.5, size: 5.5 },
+            { id: 6, label: "Cuadrante Botánico", type: "cuadrante", left: 88.5, top: 74.5, size: 6.5 },
+            { id: 7, label: "Espátula 1", type: "espatulas", left: 23.4, top: 59.2, size: 5.0 },
+            { id: 8, label: "Espátula 2", type: "espatulas", left: 38.6, top: 90.1, size: 5.0 },
+            { id: 9, type: "espatulas", label: "Espátula 3", left: 51.2, top: 93.0, size: 5.0 },
+            { id: 10, type: "espatulas", label: "Espátula 4", left: 73.5, top: 34.2, size: 5.0 },
+            { id: 11, type: "espatulas", label: "Espátula 5", left: 83.1, top: 53.5, size: 5.0 },
+            { id: 12, type: "espatulas", label: "Espátula 6", left: 95.2, top: 32.1, size: 5.0 },
+            { id: 13, type: "espatulas", label: "Espátula 7", left: 67.2, top: 58.0, size: 5.0 }
+        ];
+
+        let activeId = 1;
+
+        function renderSelector() {
+            const list = document.getElementById('selector-list');
+            list.innerHTML = '';
+            targets.forEach(t => {
+                const row = document.createElement('div');
+                row.className = `target-row ${t.id === activeId ? 'active' : ''}`;
+                row.onclick = () => { activeId = t.id; renderSelector(); };
+                row.innerHTML = `
+                    <span>${t.label}</span>
+                    <span class="coord-display">X:${t.left.toFixed(1)}% Y:${t.top.toFixed(1)}%</span>
+                `;
+                list.appendChild(row);
+            });
+            updateOutput();
+            renderMarkers();
+        }
+
+        function mapClicked(e) {
+            const rect = document.getElementById('map-container').getBoundingClientRect();
+            const leftPerc = ((e.clientX - rect.left) / rect.width) * 100;
+            const topPerc = ((e.clientY - rect.top) / rect.height) * 100;
+
+            const currentTarget = targets.find(t => t.id === activeId);
+            if (currentTarget) {
+                currentTarget.left = parseFloat(leftPerc.toFixed(1));
+                currentTarget.top = parseFloat(topPerc.toFixed(1));
+            }
+
+            // Avanzar automáticamente al siguiente objeto para agilizar el trabajo
+            if (activeId < targets.length) {
+                activeId++;
+            } else {
+                activeId = 1; // loop
+            }
+            
+            renderSelector();
+        }
+
+        function renderMarkers() {
+            document.querySelectorAll('.cal-marker').forEach(el => el.remove());
+            const container = document.getElementById('map-container');
+            
+            targets.forEach(t => {
+                const marker = document.createElement('div');
+                marker.className = 'cal-marker';
+                marker.style.left = t.left + '%';
+                marker.style.top = t.top + '%';
+                marker.innerText = t.id;
+                container.appendChild(marker);
+            });
+        }
+
+        function updateOutput() {
+            const cleanData = targets.map(t => {
+                return `    { id: ${t.id}, type: '${t.type}', left: ${t.left.toFixed(1)}, top: ${t.top.toFixed(1)}, size: ${t.size.toFixed(1)} }`;
+            }).join(',\n');
+            
+            document.getElementById('output-code').value = `const targetsConfig = [\n${cleanData}\n];`;
+        }
+
+        // Inicializar
+        renderSelector();
+    </script>
+</body>
+</html>
