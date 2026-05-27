@@ -30,7 +30,7 @@
             flex-direction: column;
         }
 
-        /* HUD Superior más compacto para pantallas de 13" */
+        /* HUD Superior */
         #hud {
             background-color: var(--azul-roca);
             padding: 10px 20px;
@@ -38,6 +38,7 @@
             justify-content: space-between;
             align-items: center;
             border-bottom: 3px solid var(--ocre-tierra);
+            flex-shrink: 0;
             z-index: 10;
         }
 
@@ -74,7 +75,7 @@
             animation: pulse 1s infinite;
         }
 
-        /* Lista de Objetivos Inferior más compacta */
+        /* Lista de Objetivos Inferior */
         #objectives-list {
             display: flex;
             gap: 12px;
@@ -82,6 +83,7 @@
             background-color: var(--azul-oscuro);
             padding: 8px 20px;
             border-bottom: 1px solid rgba(255,255,255,0.1);
+            flex-shrink: 0;
         }
 
         .obj-item {
@@ -121,35 +123,38 @@
             color: var(--turquesa-agua);
         }
 
-        /* Contenedor del Mapa con Scroll Mejorado */
+        /* Contenedor del Mapa - Ajuste estricto sin scroll vertical */
         #game-viewport {
             flex: 1;
             overflow-x: auto;
-            overflow-y: auto; /* Permite un leve ajuste vertical si la pantalla es muy pequeña */
+            overflow-y: hidden;
             position: relative;
             background: #111;
+            width: 100%;
         }
 
         #map-container {
             position: relative;
             display: inline-block;
             height: 100%;
-            min-height: 650px; /* Forzamos un tamaño mínimo ideal para mantener la escala panorámica */
         }
 
         #game-map {
             height: 100%;
-            min-height: 650px;
             width: auto;
             display: block;
         }
 
-        /* Zonas Interactivas */
+        /* Zonas Interactivas Optimizadas */
         .click-target {
             position: absolute;
             cursor: pointer;
             border-radius: 50%;
             z-index: 5;
+            transform: translate(-50%, -50%);
+            aspect-ratio: 1 / 1;
+            /* Descomenta la siguiente línea si necesitas ver los círculos para calibrar posiciones */
+            /* border: 1.5px dashed red; background: rgba(255,0,0,0.15); */
         }
 
         .found-marker {
@@ -161,9 +166,10 @@
             animation: scaleUp 0.3s ease-out forwards;
             pointer-events: none;
             z-index: 6;
+            aspect-ratio: 1 / 1;
         }
 
-        /* Pantallas Overlay (Inicio y Fin) */
+        /* Pantallas de Estado */
         .overlay-screen {
             position: absolute;
             top: 0;
@@ -297,8 +303,8 @@
         }
 
         @keyframes scaleUp {
-            0% { width: 0; height: 0; opacity: 0; }
-            100% { width: 50px; height: 50px; opacity: 1; }
+            0% { width: 0; opacity: 0; }
+            100% { width: 45px; opacity: 1; }
         }
 
         @keyframes fadeIn {
@@ -313,7 +319,7 @@
         <h2>PROYECTO OASIS</h2>
         <div class="hud-panel">
             <div id="timer" class="stat-box">Tiempo: 30s</div>
-            <div id="score" class="stat-box">Encontrados: 0 / 12</div>
+            <div id="score" class="stat-box">Encontrados: 0 / 13</div>
         </div>
     </div>
 
@@ -324,7 +330,7 @@
         </div>
         <div class="obj-item" id="obj-lagartijas">
             <img src="iSpyJUego-03.png" alt="Lagartijas">
-            <span>Lagartijas: <span class="obj-count" id="count-lagartijas">0/2</span></span>
+            <span>Lagartijas: <span class="obj-count" id="count-lagartijas">0/3</span></span>
         </div>
         <div class="obj-item" id="obj-tapete">
             <img src="iSpyJUego-06.png" alt="Muestra de tapete">
@@ -357,7 +363,7 @@
 
     <div id="end-screen" class="overlay-screen hidden">
         <h1 id="end-title">Muestreo Terminado</h1>
-        <p id="end-result" class="subtitle" style="margin-bottom: 15px;">Encontraste 0 de 12 objetos.</p>
+        <p id="end-result" class="subtitle" style="margin-bottom: 15px;">Encontraste 0 de 13 objetos.</p>
         
         <div class="carousel-wrapper">
             <button class="carousel-arrow arrow-left" onclick="moveCarousel(-1)">&#10094;</button>
@@ -371,19 +377,22 @@
     </div>
 
     <script>
+        // Coordenadas relativas (%) e incremento de áreas de contacto (size)
         const targetsConfig = [
-            { id: 1, type: 'trombolitos', left: 74.5, top: 46.0, size: 5 },
-            { id: 2, type: 'lagartijas', left: 20.3, top: 82.5, size: 4 },
-            { id: 3, type: 'lagartijas', left: 30.2, top: 49.5, size: 4 },
-            { id: 4, type: 'tapete', left: 58.2, top: 66.5, size: 4 },
-            { id: 5, type: 'cuadrante', left: 88.5, top: 74.5, size: 6 },
-            { id: 6, type: 'espatulas', left: 23.4, top: 59.2, size: 3 },
-            { id: 7, type: 'espatulas', left: 38.6, top: 90.1, size: 3 },
-            { id: 8, type: 'espatulas', left: 51.2, top: 93.0, size: 3 },
-            { id: 9, type: 'espatulas', left: 73.5, top: 34.2, size: 3 },
-            { id: 10, type: 'espatulas', left: 83.1, top: 53.5, size: 3 },
-            { id: 11, type: 'espatulas', left: 95.2, top: 32.1, size: 3 },
-            { id: 12, type: 'espatulas', left: 67.2, top: 58.0, size: 3 }
+            { id: 1, type: 'trombolitos', left: 74.5, top: 46.0, size: 5.5 },
+            { id: 2, type: 'lagartijas', left: 20.3, top: 82.5, size: 5.0 },
+            { id: 3, type: 'lagartijas', left: 30.2, top: 49.5, size: 5.0 },
+            { id: 4, type: 'lagartijas', left: 51.5, top: 40.0, size: 5.0 }, // Tercera lagartija añadida
+            { id: 5, type: 'tapete', left: 58.2, top: 66.5, size: 5.5 },
+            { id: 6, type: 'cuadrante', left: 88.5, top: 74.5, size: 6.5 },
+            // Espátulas con hitbox ampliado (size: 5.0) para corregir errores de detección
+            { id: 7, type: 'espatulas', left: 23.4, top: 59.2, size: 5.0 },
+            { id: 8, type: 'espatulas', left: 38.6, top: 90.1, size: 5.0 },
+            { id: 9, type: 'espatulas', left: 51.2, top: 93.0, size: 5.0 },
+            { id: 10, type: 'espatulas', left: 73.5, top: 34.2, size: 5.0 },
+            { id: 11, type: 'espatulas', left: 83.1, top: 53.5, size: 5.0 },
+            { id: 12, type: 'espatulas', left: 95.2, top: 32.1, size: 5.0 },
+            { id: 13, type: 'espatulas', left: 67.2, top: 58.0, size: 5.0 }
         ];
 
         const itemsLibrary = {
@@ -401,8 +410,8 @@
         let currentSlideIdx = 0;
         
         const counts = { trombolitos: 0, lagartijas: 0, tapete: 0, cuadrante: 0, espatulas: 0 };
-        const maxCounts = { trombolitos: 1, lagartijas: 2, tapete: 1, cuadrante: 1, espatulas: 7 };
-        const totalItems = 12;
+        const maxCounts = { trombolitos: 1, lagartijas: 3, tapete: 1, cuadrante: 1, espatulas: 7 };
+        const totalItems = 13;
 
         function initTargets() {
             const container = document.getElementById('map-container');
@@ -414,9 +423,7 @@
                 element.className = 'click-target';
                 element.style.left = target.left + '%';
                 element.style.top = target.top + '%';
-                element.style.width = target.size + '%';
-                element.style.height = (target.size * 3) + '%'; 
-                element.style.transform = 'translate(-50%, -50%)';
+                element.style.width = target.size + '%'; // aspect-ratio maneja el alto simétricamente
                 
                 element.onclick = (e) => handleTargetClick(e, target);
                 container.appendChild(element);
@@ -459,6 +466,7 @@
             marker.className = 'found-marker';
             marker.style.left = target.left + '%';
             marker.style.top = target.top + '%';
+            marker.style.width = target.size + '%';
             container.appendChild(marker);
 
             e.target.style.display = 'none';
@@ -520,9 +528,11 @@
 
         function moveCarousel(step) {
             const slides = document.querySelectorAll('.carousel-slide');
-            slides[currentSlideIdx].classList.remove('active');
+            if (slides.length === 0) return;
             
+            slides[currentSlideIdx].classList.remove('active');
             currentSlideIdx += step;
+            
             if (currentSlideIdx >= slides.length) currentSlideIdx = 0;
             if (currentSlideIdx < 0) currentSlideIdx = slides.length - 1;
             
@@ -541,7 +551,7 @@
             
             document.querySelectorAll('.obj-item').forEach(el => el.classList.remove('completed'));
             document.getElementById('count-trombolitos').innerText = "0/1";
-            document.getElementById('count-lagartijas').innerText = "0/2";
+            document.getElementById('count-lagartijas').innerText = "0/3";
             document.getElementById('count-tapete').innerText = "0/1";
             document.getElementById('count-cuadrante').innerText = "0/1";
             document.getElementById('count-espatulas').innerText = "0/7";
