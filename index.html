@@ -123,7 +123,7 @@
             color: var(--turquesa-agua);
         }
 
-        /* Contenedor Fijo anti-scroll vertical */
+        /* Contenedor del Mapa - Ajuste estricto sin scroll vertical */
         #game-viewport {
             flex: 1;
             overflow-x: auto;
@@ -145,7 +145,7 @@
             display: block;
         }
 
-        /* Hitboxes Circulares Ajustadas */
+        /* Zonas Interactivas Circulares Perfectas */
         .click-target {
             position: absolute;
             cursor: pointer;
@@ -167,7 +167,7 @@
             aspect-ratio: 1 / 1;
         }
 
-        /* Pantallas de Estado */
+        /* Pantallas de Estado Overlays */
         .overlay-screen {
             position: absolute;
             top: 0;
@@ -208,7 +208,7 @@
             transform: translateY(-2px);
         }
 
-        /* CARRUSEL */
+        /* DISEÑO DEL CARRUSEL */
         .carousel-wrapper {
             position: relative;
             width: 100%;
@@ -366,32 +366,28 @@
         <div class="carousel-wrapper">
             <button class="carousel-arrow arrow-left" onclick="moveCarousel(-1)">&#10094;</button>
             <button class="carousel-arrow arrow-right" onclick="moveCarousel(1)">&#10095;</button>
-            
-            <div class="carousel-container" id="carousel-content">
-                </div>
+            <div class="carousel-container" id="carousel-content"></div>
         </div>
 
         <button class="btn" onclick="resetGame()">Reiniciar Desafío</button>
     </div>
 
     <script>
-        // Coordenadas milimétricas recalculadas para pantalla fija
+        // Tus Coordenadas Calibradas de Precisión
         const targetsConfig = [
-            { id: 1, type: 'trombolitos', left: 80.5, top: 60.0, size: 6.0 },
-            { id: 2, type: 'lagartijas', left: 21.0, top: 83.0, size: 5.0 },
-            { id: 3, type: 'lagartijas', left: 30.5, top: 54.0, size: 5.0 },
-            { id: 4, type: 'lagartijas', left: 55.5, top: 46.0, size: 5.0 },
-            { id: 5, type: 'tapete', left: 62.2, top: 71.5, size: 5.5 },
-            { id: 6, type: 'cuadrante', left: 95.0, top: 76.5, size: 6.5 },
-            
-            // Las 7 Espátulas de Muestreo (Calibradas y con hitboxes agrandados)
-            { id: 7, type: 'espatulas', left: 23.4, top: 59.2, size: 5.0 }, 
-            { id: 8, type: 'espatulas', left: 36.0, top: 41.5, size: 6.5 },  // RECALIBRADA (Bajo vicuñas fondo)
-            { id: 9, type: 'espatulas', left: 59.0, top: 61.5, size: 6.5 },  // RECALIBRADA (Sobre muestra naranja)
-            { id: 10, type: 'espatulas', left: 41.3, top: 90.5, size: 5.0 }, 
-            { id: 11, type: 'espatulas', left: 54.5, top: 93.5, size: 5.0 }, 
-            { id: 12, type: 'espatulas', left: 89.8, top: 57.5, size: 5.0 }, 
-            { id: 13, type: 'espatulas', left: 76.8, top: 34.5, size: 5.0 }  
+            { id: 1, type: 'trombolitos', left: 76.4, top: 49.1, size: 5.5 },
+            { id: 2, type: 'lagartijas', left: 20.9, top: 83.1, size: 5.0 },
+            { id: 3, type: 'lagartijas', left: 29.8, top: 50.0, size: 5.0 },
+            { id: 4, type: 'lagartijas', left: 51.8, top: 39.7, size: 5.0 },
+            { id: 5, type: 'tapete', left: 57.4, top: 66.5, size: 5.5 },
+            { id: 6, type: 'cuadrante', left: 88.6, top: 74.7, size: 6.5 },
+            { id: 7, type: 'espatulas', left: 33.9, top: 33.2, size: 5.0 },
+            { id: 8, type: 'espatulas', left: 37.8, top: 90.5, size: 5.0 },
+            { id: 9, type: 'espatulas', left: 51.1, top: 93.0, size: 5.0 },
+            { id: 10, type: 'espatulas', left: 71.8, top: 33.6, size: 5.0 },
+            { id: 11, type: 'espatulas', left: 95.2, top: 32.1, size: 5.0 },
+            { id: 12, type: 'espatulas', left: 83.9, top: 53.0, size: 5.0 },
+            { id: 13, type: 'espatulas', left: 55.1, top: 57.7, size: 5.0 }
         ];
 
         const itemsLibrary = {
