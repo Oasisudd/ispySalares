@@ -55,7 +55,6 @@
             text-align: center;
         }
 
-        /* Indicador de Scroll Horizontal */
         .scroll-indicator-box {
             background: rgba(0, 169, 157, 0.15);
             border: 1px dashed var(--turquesa-agua);
@@ -99,11 +98,9 @@
             animation: pulseHUD 1s infinite;
         }
 
-        #score {
-            border-color: var(--ocre-tierra);
-        }
+        #score { border-color: var(--ocre-tierra); }
 
-        /* LISTA VERTICAL DE OBJETIVOS AMPLILADA */
+        /* LISTA VERTICAL DE OBJETIVOS V2 */
         #objectives-list {
             display: flex;
             flex-direction: column;
@@ -154,9 +151,7 @@
             font-size: 1.2rem;
         }
 
-        .obj-item.completed .obj-count {
-            color: var(--turquesa-agua);
-        }
+        .obj-item.completed .obj-count { color: var(--turquesa-agua); }
 
         /* VISUALIZADOR MAPA (DERECHA) */
         #game-viewport {
@@ -180,7 +175,6 @@
             display: block;
         }
 
-        /* HITBOXES Y MARCADORES */
         .click-target {
             position: absolute;
             cursor: pointer;
@@ -238,11 +232,11 @@
         }
         .btn:hover { background-color: #00cabd; transform: translateY(-2px); }
 
-        /* DISEÑO CARRUSEL FINAL ACTUALIZADO PARA DOS IMÁGENES SIDE-BY-SIDE */
+        /* DISEÑO CARRUSEL FINAL OPTIMIZADO (FOTO REAL 3X MÁS GRANDE) */
         .carousel-wrapper {
             position: relative;
             width: 100%;
-            max-width: 620px;
+            max-width: 680px;
             background: var(--azul-roca);
             border: 2px solid var(--ocre-tierra);
             border-radius: 8px;
@@ -253,7 +247,7 @@
 
         .carousel-container { 
             overflow: hidden; 
-            min-height: 250px; 
+            min-height: 310px; 
         }
 
         .carousel-slide { 
@@ -263,17 +257,14 @@
             animation: fadeIn 0.4s ease-in-out; 
         }
 
-        .carousel-slide.active { 
-            display: flex; 
-        }
+        .carousel-slide.active { display: flex; }
 
-        /* Contenedor de las dos imágenes */
         .slide-images-container {
             display: flex;
-            gap: 20px;
+            gap: 15px;
             margin-bottom: 12px;
             justify-content: center;
-            align-items: center;
+            align-items: flex-end;
         }
 
         .slide-img-container { 
@@ -284,7 +275,6 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            width: 100px;
         }
 
         .img-label {
@@ -296,10 +286,25 @@
             letter-spacing: 0.5px;
         }
 
-        .carousel-slide img { 
-            height: 76px; 
-            width: 76px;
+        /* Contenedor del dibujo (Versión chica original) */
+        .slide-img-container.type-drawing {
+            width: 85px;
+        }
+        .slide-img-container.type-drawing img { 
+            height: 60px; 
+            width: 60px;
             object-fit: contain; 
+        }
+
+        /* Contenedor en terreno (Triple de grande) */
+        .slide-img-container.type-real {
+            width: 255px; /* 3x el ancho del dibujo */
+        }
+        .slide-img-container.type-real img { 
+            height: 140px; 
+            width: 240px;
+            object-fit: cover; /* Ajuste limpio de la fotografía */
+            border-radius: 4px;
         }
 
         .slide-title { font-size: 1.4rem; color: var(--turquesa-agua); margin-bottom: 4px; }
@@ -338,27 +343,27 @@
 
         <div id="objectives-list">
             <div class="obj-item" id="obj-trombolitos">
-                <div class="obj-item-info"><img src="iSpyJUego-05.png"><span>Trombolitos</span></div>
+                <div class="obj-item-info"><img src="iSpyJUegoV2-05.png"><span>Trombolitos</span></div>
                 <span class="obj-count" id="count-trombolitos">0/1</span>
             </div>
             <div class="obj-item" id="obj-lagartijas">
-                <div class="obj-item-info"><img src="iSpyJUego-03.png"><span>Lagartijas</span></div>
+                <div class="obj-item-info"><img src="iSpyJUegoV2-03.png"><span>Lagartijas</span></div>
                 <span class="obj-count" id="count-lagartijas">0/3</span>
             </div>
             <div class="obj-item" id="obj-tapete">
-                <div class="obj-item-info"><img src="iSpyJUego-06.png"><span>Muestra Mat</span></div>
+                <div class="obj-item-info"><img src="iSpyJUegoV2-06.png"><span>Muestra Mat</span></div>
                 <span class="obj-count" id="count-tapete">0/1</span>
             </div>
             <div class="obj-item" id="obj-cuadrante">
-                <div class="obj-item-info"><img src="iSpyJUego-04.png"><span>Cuadrante</span></div>
+                <div class="obj-item-info"><img src="iSpyJUegoV2-04.png"><span>Cuadrante</span></div>
                 <span class="obj-count" id="count-cuadrante">0/1</span>
             </div>
             <div class="obj-item" id="obj-espatulas">
-                <div class="obj-item-info"><img src="iSpyJUego-02.png"><span>Espátulas</span></div>
+                <div class="obj-item-info"><img src="iSpyJUegoV2-02.png"><span>Espátulas</span></div>
                 <span class="obj-count" id="count-espatulas">0/4</span>
             </div>
             <div class="obj-item" id="obj-ranunculus">
-                <div class="obj-item-info"><img src="iSpyJUego-07.png"><span>Ranunculus</span></div>
+                <div class="obj-item-info"><img src="iSpyJUegoV2-07.png"><span>Ranunculus</span></div>
                 <span class="obj-count" id="count-ranunculus">0/1</span>
             </div>
         </div>
@@ -392,7 +397,6 @@
     </div>
 
     <script>
-        // Tus Coordenadas Reales Calibradas de Precisión
         const targetsConfig = [
             { id: 1, type: 'trombolitos', left: 75.9, top: 47.5, size: 5.5 },
             { id: 2, type: 'lagartijas', left: 20.9, top: 83.0, size: 5.0 },
@@ -407,14 +411,13 @@
             { id: 11, type: 'ranunculus', left: 83.3, top: 85.4, size: 5.0 }
         ];
 
-        // Biblioteca de Datos incluyendo el mapeo de imágenes reales
         const itemsLibrary = {
-            trombolitos: { name: "Trombolitos", img: "iSpyJUego-05.png", realImg: "trombolitos.png", desc: "Estructuras organo-sedimentarias complejas formadas por comunidades de cianobacterias. Son fósiles vivientes claves para estudiar orígenes biológicos en la Puna." },
-            lagartijas: { name: "Lagartijas Nativas", img: "iSpyJUego-03.png", realImg: "lagartija.png", desc: "Reptiles del género Liolaemus adaptados a radiación UV extrema y oscilaciones térmicas diarias bruscas en el salar." },
-            tapete: { name: "Tapete Microbiano", img: "iSpyJUego-06.png", realImg: "tapete.png", desc: "Comunidades microbianas bentónicas estratificadas en salmueras. Responsables del ciclo de nutrientes del ecosistema." },
-            cuadrante: { name: "Cuadrante Botánico", img: "iSpyJUego-04.png", realImg: "cuadrante.png", desc: "Marco estandarizado de terreno para delimitar áreas ecológicas fijas y cuantificar cobertura de flora nativa sin alteración." },
-            espatulas: { name: "Espátulas de Muestreo", img: "iSpyJUego-02.png", realImg: "espatula.png", desc: "Herramienta científica estéril para recolectar costras de sal y sedimentos profundos evitando contaminación externa." },
-            ranunculus: { name: "Ranunculus de Vegas", img: "iSpyJUego-07.png", realImg: "ranunculus.png", desc: "Plantas perennes adaptadas a la alta humedad de las vegas y bofedales altoandinos. Son bioindicadores críticos de la presencia y salud de agua dulce superficial." }
+            trombolitos: { name: "Trombolitos", img: "iSpyJUegoV2-05.png", realImg: "trombolitos.png", desc: "Estructuras organo-sedimentarias complejas formadas por comunidades de cianobacterias. Son fósiles vivientes claves para estudiar orígenes biológicos en la Puna." },
+            lagartijas: { name: "Lagartijas Nativas", img: "iSpyJUegoV2-03.png", realImg: "lagartija.png", desc: "Reptiles del género Liolaemus adaptados a radiación UV extrema y oscilaciones térmicas diarias bruscas en el salar." },
+            tapete: { name: "Tapete Microbiano", img: "iSpyJUegoV2-06.png", realImg: "tapete.png", desc: "Comunidades microbianas bentónicas estratificadas en salmueras. Responsables del ciclo de nutrientes del ecosistema." },
+            cuadrante: { name: "Cuadrante Botánico", img: "iSpyJUegoV2-04.png", realImg: "cuadrante.png", desc: "Marco estandarizado de terreno para delimitar áreas ecológicas fijas y cuantificar cobertura de flora nativa sin alteración." },
+            espatulas: { name: "Espátulas de Muestreo", img: "iSpyJUegoV2-02.png", realImg: "espatula.png", desc: "Herramienta científica estéril para recolectar costras de sal y sedimentos profundos evitando contaminación externa." },
+            ranunculus: { name: "Ranunculus de Vegas", img: "iSpyJUegoV2-07.png", realImg: "ranunculus.png", desc: "Plantas perennes adaptadas a la alta humedad de las vegas y bofedales altoandinos. Son bioindicadores críticos de la presencia y salud de agua dulce superficial." }
         };
 
         let gameActive = false, timeLeft = 30, timerInterval, foundIds = [], currentSlideIdx = 0;
@@ -483,14 +486,13 @@
                 const slide = document.createElement('div');
                 slide.className = `carousel-slide ${idx === 0 ? 'active' : ''}`;
                 
-                // Renderizado con doble contenedor simétrico para dibujo y foto real
                 slide.innerHTML = `
                     <div class="slide-images-container">
-                        <div class="slide-img-container">
+                        <div class="slide-img-container type-drawing">
                             <span class="img-label">Dibujo</span>
                             <img src="${data.img}" alt="${data.name}">
                         </div>
-                        <div class="slide-img-container">
+                        <div class="slide-img-container type-real">
                             <span class="img-label">En Terreno</span>
                             <img src="${data.realImg}" alt="${data.name} Real">
                         </div>
