@@ -67,7 +67,6 @@
             overflow-y: auto;
         }
 
-        /* Contenedor del Logo Institucional */
         .logo-container {
             width: 100%;
             text-align: center;
@@ -155,6 +154,13 @@
             gap: 14px;
             font-size: 0.95rem;
             font-weight: 600;
+            overflow: hidden;
+        }
+
+        .obj-item-info span {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .obj-item.completed {
@@ -179,18 +185,22 @@
             color: var(--ocre-tierra);
             font-family: monospace;
             font-size: 1.2rem;
+            padding-left: 4px;
+            flex-shrink: 0;
         }
 
         .obj-item.completed .obj-count { color: var(--turquesa-agua); }
 
-        /* VISUALIZADOR MAPA (DERECHA) */
+        /* VISUALIZADOR MAPA (DERECHA) - CORREGIDO CON MIN-WIDTH */
         #game-viewport {
             flex: 1;
+            min-width: 0; /* Corrección crítica para desbordamiento Flexbox en móviles */
             overflow-x: auto;
             overflow-y: hidden;
             position: relative;
             background: #111;
             height: 100%;
+            -webkit-overflow-scrolling: touch; /* Scroll suave inercial en iOS */
         }
 
         #map-container {
@@ -199,9 +209,11 @@
             height: 100%;
         }
 
+        /* CORREGIDO CON MAX-WIDTH: NONE */
         #game-map {
             height: 100%;
             width: auto;
+            max-width: none !important; /* Fuerza al navegador a no recortar el ancho panorámico */
             display: block;
         }
 
@@ -226,7 +238,7 @@
             aspect-ratio: 1 / 1;
         }
 
-        /* OVERLAYS GENERALES */
+        /* OVERLAYS */
         .overlay-screen {
             position: absolute;
             top: 0;
@@ -262,7 +274,7 @@
         }
         .btn:hover { background-color: #00cabd; transform: translateY(-2px); }
 
-        /* DISEÑO REVISIÓN CARRUSEL EXTRA GRANDE */
+        /* REVISIÓN CARRUSEL EXTRA GRANDE */
         .carousel-wrapper {
             position: relative;
             width: 100%;
@@ -294,7 +306,7 @@
         .arrow-left { left: 10px; }
         .arrow-right { right: 10px; }
 
-        /* OPTIMIZACIONES CELULARES HORIZONTAL (GALAXY S22) */
+        /* OPTIMIZACIONES CELULARES HORIZONTAL */
         @media (max-height: 500px) {
             #sidebar {
                 width: 180px;
@@ -309,14 +321,20 @@
             #objectives-list { gap: 6px; }
             .obj-item { padding: 6px 10px; border-radius: 6px; }
             .obj-item img { width: 36px; height: 36px; padding: 2px; border-radius: 4px; }
-            .obj-item-info { gap: 8px; font-size: 0.75rem; }
+            .obj-item-info { gap: 6px; font-size: 0.75rem; width: calc(100% - 25px); }
+            .obj-item-info span { max-width: 72px; } 
             .obj-count { font-size: 0.95rem; }
 
-            /* Ajustes Overlays y Carrusel */
-            h1 { font-size: 1.6rem; margin-bottom: 4px; }
-            .subtitle { font-size: 0.85rem; margin-bottom: 12px; }
+            .overlay-screen { 
+                justify-content: flex-start; 
+                overflow-y: auto; 
+                padding: 10px; 
+            }
+            h1 { font-size: 1.4rem; margin-bottom: 2px; margin-top: 5px; }
+            .subtitle { font-size: 0.85rem; margin-bottom: 8px; }
             .btn { padding: 8px 25px; font-size: 0.95rem; }
-            .carousel-wrapper { max-width: 92%; padding: 10px 35px; margin-bottom: 5px; }
+            
+            .carousel-wrapper { max-width: 95%; padding: 10px 35px; margin-bottom: 5px; }
             .carousel-container { min-height: 200px; }
             .slide-images-container { gap: 10px; margin-bottom: 6px; }
             .slide-img-container.type-drawing { width: 55px; }
