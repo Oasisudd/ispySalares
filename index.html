@@ -30,6 +30,29 @@
             flex-direction: row;
         }
 
+        /* DETECTOR DE ORIENTACIÓN (PANTALLA VERTICAL) */
+        #rotation-screen {
+            display: none;
+            background-color: var(--azul-oscuro);
+            z-index: 999;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .phone-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            animation: rotatePhone 2.5s infinite ease-in-out;
+            color: var(--turquesa-agua);
+        }
+
+        @media (orientation: portrait) {
+            #rotation-screen {
+                display: flex !important;
+            }
+        }
+
         /* BARRA LATERAL IZQUIERDA */
         #sidebar {
             width: 320px;
@@ -44,15 +67,22 @@
             overflow-y: auto;
         }
 
-        #sidebar h2 {
-            color: #ffffff;
-            font-size: 1.4rem;
-            font-weight: 700;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            border-bottom: 2px solid var(--turquesa-agua);
-            padding-bottom: 8px;
+        /* Contenedor del Logo Institucional */
+        .logo-container {
+            width: 100%;
             text-align: center;
+            border-bottom: 2px solid var(--turquesa-agua);
+            padding-bottom: 12px;
+            flex-shrink: 0;
+        }
+
+        .sidebar-logo {
+            width: 100%;
+            max-width: 220px;
+            height: auto;
+            max-height: 55px;
+            object-fit: contain;
+            display: inline-block;
         }
 
         .scroll-indicator-box {
@@ -100,7 +130,7 @@
 
         #score { border-color: var(--ocre-tierra); }
 
-        /* LISTA VERTICAL DE OBJETIVOS V2 */
+        /* LISTA VERTICAL DE OBJETIVOS */
         #objectives-list {
             display: flex;
             flex-direction: column;
@@ -196,7 +226,7 @@
             aspect-ratio: 1 / 1;
         }
 
-        /* OVERLAYS */
+        /* OVERLAYS GENERALES */
         .overlay-screen {
             position: absolute;
             top: 0;
@@ -232,7 +262,7 @@
         }
         .btn:hover { background-color: #00cabd; transform: translateY(-2px); }
 
-        /* DISEÑO CARRUSEL FINAL OPTIMIZADO (FOTO REAL 3X MÁS GRANDE) */
+        /* DISEÑO REVISIÓN CARRUSEL EXTRA GRANDE */
         .carousel-wrapper {
             position: relative;
             width: 100%;
@@ -244,80 +274,66 @@
             margin-bottom: 15px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
-
-        .carousel-container { 
-            overflow: hidden; 
-            min-height: 310px; 
-        }
-
-        .carousel-slide { 
-            display: none; 
-            flex-direction: column; 
-            align-items: center; 
-            animation: fadeIn 0.4s ease-in-out; 
-        }
-
+        .carousel-container { overflow: hidden; min-height: 310px; }
+        .carousel-slide { display: none; flex-direction: column; align-items: center; animation: fadeIn 0.4s ease-in-out; }
         .carousel-slide.active { display: flex; }
-
-        .slide-images-container {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 12px;
-            justify-content: center;
-            align-items: flex-end;
-        }
-
-        .slide-img-container { 
-            background: #ffffff; 
-            padding: 6px; 
-            border-radius: 8px; 
-            border: 2px solid var(--ocre-tierra); 
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .img-label {
-            font-size: 0.65rem;
-            color: var(--azul-oscuro);
-            font-weight: bold;
-            margin-bottom: 4px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        /* Contenedor del dibujo (Versión chica original) */
-        .slide-img-container.type-drawing {
-            width: 85px;
-        }
-        .slide-img-container.type-drawing img { 
-            height: 60px; 
-            width: 60px;
-            object-fit: contain; 
-        }
-
-        /* Contenedor en terreno (Triple de grande) */
-        .slide-img-container.type-real {
-            width: 255px; /* 3x el ancho del dibujo */
-        }
-        .slide-img-container.type-real img { 
-            height: 140px; 
-            width: 240px;
-            object-fit: cover; /* Ajuste limpio de la fotografía */
-            border-radius: 4px;
-        }
-
+        .slide-images-container { display: flex; gap: 15px; margin-bottom: 12px; justify-content: center; align-items: flex-end; }
+        .slide-img-container { background: #ffffff; padding: 6px; border-radius: 8px; border: 2px solid var(--ocre-tierra); display: flex; flex-direction: column; align-items: center; }
+        .img-label { font-size: 0.65rem; color: var(--azul-oscuro); font-weight: bold; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .slide-img-container.type-drawing { width: 85px; }
+        .slide-img-container.type-drawing img { height: 60px; width: 60px; object-fit: contain; }
+        .slide-img-container.type-real { width: 255px; }
+        .slide-img-container.type-real img { height: 140px; width: 240px; object-fit: cover; border-radius: 4px; }
         .slide-title { font-size: 1.4rem; color: var(--turquesa-agua); margin-bottom: 4px; }
         .slide-status { font-size: 0.9rem; font-weight: bold; margin-bottom: 10px; padding: 2px 10px; border-radius: 12px; display: inline-block; }
         .status-found { background-color: rgba(0, 169, 157, 0.2); color: var(--turquesa-agua); }
         .status-missed { background-color: rgba(255, 123, 172, 0.2); color: var(--rosa-fauna); }
         .slide-desc { font-size: 0.95rem; line-height: 1.45; color: #dddddd; text-align: justify; }
-
         .carousel-arrow { position: absolute; top: 50%; transform: translateY(-50%); background: transparent; border: none; color: var(--turquesa-agua); font-size: 2.2rem; cursor: pointer; padding: 10px; transition: color 0.2s; }
         .carousel-arrow:hover { color: #ffffff; }
         .arrow-left { left: 10px; }
         .arrow-right { right: 10px; }
 
+        /* OPTIMIZACIONES CELULARES HORIZONTAL (GALAXY S22) */
+        @media (max-height: 500px) {
+            #sidebar {
+                width: 180px;
+                padding: 10px;
+                gap: 8px;
+            }
+            .logo-container { padding-bottom: 6px; }
+            .sidebar-logo { max-height: 32px; }
+            .scroll-indicator-box { font-size: 0.65rem; padding: 5px; letter-spacing: 0px; }
+            .stats-container { gap: 5px; }
+            .stat-box { padding: 5px 8px; font-size: 0.8rem; border-radius: 4px; }
+            #objectives-list { gap: 6px; }
+            .obj-item { padding: 6px 10px; border-radius: 6px; }
+            .obj-item img { width: 36px; height: 36px; padding: 2px; border-radius: 4px; }
+            .obj-item-info { gap: 8px; font-size: 0.75rem; }
+            .obj-count { font-size: 0.95rem; }
+
+            /* Ajustes Overlays y Carrusel */
+            h1 { font-size: 1.6rem; margin-bottom: 4px; }
+            .subtitle { font-size: 0.85rem; margin-bottom: 12px; }
+            .btn { padding: 8px 25px; font-size: 0.95rem; }
+            .carousel-wrapper { max-width: 92%; padding: 10px 35px; margin-bottom: 5px; }
+            .carousel-container { min-height: 200px; }
+            .slide-images-container { gap: 10px; margin-bottom: 6px; }
+            .slide-img-container.type-drawing { width: 55px; }
+            .slide-img-container.type-drawing img { height: 35px; width: 35px; }
+            .slide-img-container.type-real { width: 165px; }
+            .slide-img-container.type-real img { height: 80px; width: 153px; }
+            .slide-title { font-size: 1.05rem; }
+            .slide-status { font-size: 0.75rem; margin-bottom: 4px; padding: 1px 8px; }
+            .slide-desc { font-size: 0.75rem; line-height: 1.3; }
+            .carousel-arrow { font-size: 1.6rem; }
+        }
+
+        /* ANIMACIONES */
+        @keyframes rotatePhone {
+            0%, 100% { transform: rotate(0deg); }
+            40%, 60% { transform: rotate(90deg); }
+        }
         @keyframes pulseHint {
             0%, 100% { opacity: 0.8; transform: scale(1); }
             50% { opacity: 1; transform: scale(1.02); border-color: var(--rosa-fauna); color: #ffffff; }
@@ -329,8 +345,18 @@
 </head>
 <body>
 
+    <div id="rotation-screen" class="overlay-screen">
+        <div class="phone-icon">🔄📱</div>
+        <h1>Gira tu teléfono</h1>
+        <p style="max-width: 320px; color: #b3b9c9; line-height: 1.5; margin-top: 10px; font-size: 0.95rem;">
+            Este muestreo digital está diseñado exclusivamente para explorarse en formato horizontal.
+        </p>
+    </div>
+
     <div id="sidebar">
-        <h2>OASIS</h2>
+        <div class="logo-container">
+            <img src="OASIS_logoblanco.png" alt="Proyecto OASIS" class="sidebar-logo">
+        </div>
         
         <div class="scroll-indicator-box">
             ↔ DESLIZA EL MAPA HACIA LA DERECHA
@@ -378,8 +404,8 @@
     <div id="start-screen" class="overlay-screen">
         <h1>Explora Maricunga</h1>
         <div class="subtitle">Desafío Express: 30 Segundos</div>
-        <p style="max-width: 500px; line-height: 1.5; margin-bottom: 25px; color: #b3b9c9; font-size: 1rem;">
-            Usa el scroll o arrastra el mapa horizontalmente para explorar todo el salar. Encuentra las muestras científicas antes de que termine el tiempo.
+        <p style="max-width: 460px; line-height: 1.4; margin-bottom: 20px; color: #b3b9c9; font-size: 0.95rem;">
+            Arrastra el mapa horizontalmente para recorrer el salar. Encuentra los instrumentos y la flora nativa antes de que termine el tiempo.
         </p>
         <button class="btn" onclick="startGame()">Comenzar Muestreo</button>
     </div>
