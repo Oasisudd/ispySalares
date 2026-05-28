@@ -21,7 +21,6 @@
             display: flex;
         }
 
-        /* Área de simulación del Juego (Izquierda) */
         #game-simulator {
             flex: 1;
             display: flex;
@@ -36,7 +35,6 @@
             padding: 10px 20px;
             border-bottom: 3px solid var(--ocre-tierra);
             flex-shrink: 0;
-            font-size: 0.9rem;
         }
 
         #objectives-list {
@@ -60,7 +58,6 @@
         #map-container { position: relative; display: inline-block; height: 100%; }
         #game-map { height: 100%; width: auto; display: block; cursor: crosshair; }
 
-        /* Marcadores de Calibración */
         .cal-marker {
             position: absolute;
             width: 30px;
@@ -79,7 +76,6 @@
             text-shadow: 1px 1px 2px black;
         }
 
-        /* Panel de Control (Derecha) */
         #control-panel {
             width: 380px;
             background-color: #252a36;
@@ -91,14 +87,13 @@
             flex-shrink: 0;
         }
         h3 { color: var(--turquesa-agua); border-bottom: 1px solid #444; padding-bottom: 5px; }
-        
         .instruction { font-size: 0.85rem; color: #b3b9c9; line-height: 1.4; }
 
         .target-selector {
             display: flex;
             flex-direction: column;
             gap: 6px;
-            max-height: 300px;
+            max-height: 280px;
             overflow-y: auto;
             background: rgba(0,0,0,0.2);
             padding: 8px;
@@ -115,13 +110,12 @@
             font-size: 0.85rem;
             border: 1px solid transparent;
         }
-        .target-row:hover { background: #384154; }
         .target-row.active { border-color: var(--turquesa-agua); background: rgba(0, 169, 157, 0.2); }
         .coord-display { font-family: monospace; color: #e67e22; font-weight: bold; }
 
         textarea {
             width: 100%;
-            height: 220px;
+            height: 240px;
             background: #111;
             color: #2ecc71;
             border: 1px solid #444;
@@ -135,49 +129,48 @@
 <body>
 
     <div id="game-simulator">
-        <div id="hud"><h2>PROYECTO OASIS (VISTA CALIBRACIÓN)</h2></div>
+        <div id="hud"><h2>OASIS - CALIBRADOR DE NUEVO FONDO</h2></div>
         <div id="objectives-list">
             <div class="obj-mock">Trombolitos: 0/1</div>
             <div class="obj-mock">Lagartijas: 0/3</div>
             <div class="obj-mock">Muestra Mat: 0/1</div>
             <div class="obj-mock">Cuadrante: 0/1</div>
             <div class="obj-mock">Espátulas: 0/7</div>
+            <div class="obj-mock">Ranunculus: 0/1</div>
         </div>
         <div id="game-viewport">
             <div id="map-container">
-                <img id="game-map" src="iSpyJUego-01.png" alt="Salar de Maricunga" onclick="mapClicked(event)">
-                </div>
+                <img id="game-map" src="iSpyJUego-background.png" onclick="mapClicked(event)">
+            </div>
         </div>
     </div>
 
     <div id="control-panel">
-        <h3>Mapeador de Coordenadas</h3>
-        <p class="instruction">1. Selecciona un objeto de la lista.<br>2. Haz clic en su ubicación real dentro del mapa de la izquierda.</p>
+        <h3>Mapeador Activo</h3>
+        <p class="instruction">Selecciona el ítem y haz clic sobre su posición real en la imagen izquierda:</p>
         
-        <div class="target-selector" id="selector-list">
-            </div>
+        <div class="target-selector" id="selector-list"></div>
 
-        <h3>Código Generado</h3>
-        <p class="instruction">Copia este bloque de datos directamente en tu archivo index.html final:</p>
+        <h3>Código de Coordenadas Generado</h3>
         <textarea id="output-code" readonly onclick="this.select()"></textarea>
     </div>
 
     <script>
-        // Estructura de datos limpia para calibrar los 13 objetos
         const targets = [
-            { id: 1, label: "Trombolito 1", type: "trombolitos", left: 74.5, top: 46.0, size: 5.5 },
-            { id: 2, label: "Lagartija 1 (Abajo Izq)", type: "lagartijas", left: 20.3, top: 82.5, size: 5.0 },
-            { id: 3, label: "Lagartija 2 (Centro)", type: "lagartijas", left: 30.2, top: 49.5, size: 5.0 },
-            { id: 4, label: "Lagartija 3 (Orilla Agua)", type: "lagartijas", left: 52.5, top: 40.0, size: 5.0 },
-            { id: 5, label: "Muestra Mat 1", type: "tapete", left: 58.2, top: 66.5, size: 5.5 },
-            { id: 6, label: "Cuadrante Botánico", type: "cuadrante", left: 88.5, top: 74.5, size: 6.5 },
-            { id: 7, label: "Espátula 1", type: "espatulas", left: 23.4, top: 59.2, size: 5.0 },
-            { id: 8, label: "Espátula 2", type: "espatulas", left: 38.6, top: 90.1, size: 5.0 },
-            { id: 9, type: "espatulas", label: "Espátula 3", left: 51.2, top: 93.0, size: 5.0 },
-            { id: 10, type: "espatulas", label: "Espátula 4", left: 73.5, top: 34.2, size: 5.0 },
-            { id: 11, type: "espatulas", label: "Espátula 5", left: 83.1, top: 53.5, size: 5.0 },
-            { id: 12, type: "espatulas", label: "Espátula 6", left: 95.2, top: 32.1, size: 5.0 },
-            { id: 13, type: "espatulas", label: "Espátula 7", left: 67.2, top: 58.0, size: 5.0 }
+            { id: 1, label: "Trombolito 1", type: "trombolitos", left: 76.4, top: 49.1, size: 5.5 },
+            { id: 2, label: "Lagartija 1", type: "lagartijas", left: 20.9, top: 83.1, size: 5.0 },
+            { id: 3, label: "Lagartija 2", type: "lagartijas", left: 29.8, top: 50.0, size: 5.0 },
+            { id: 4, label: "Lagartija 3", type: "lagartijas", left: 51.8, top: 39.7, size: 5.0 },
+            { id: 5, label: "Muestra Mat 1", type: "tapete", left: 57.4, top: 66.5, size: 5.5 },
+            { id: 6, label: "Cuadrante Botánico", type: "cuadrante", left: 88.6, top: 74.7, size: 6.5 },
+            { id: 7, label: "Espátula 1", type: "espatulas", left: 33.9, top: 33.2, size: 5.0 },
+            { id: 8, label: "Espátula 2", type: "espatulas", left: 37.8, top: 90.5, size: 5.0 },
+            { id: 9, label: "Espátula 3", type: "espatulas", left: 51.1, top: 93.0, size: 5.0 },
+            { id: 10, label: "Espátula 4", type: "espatulas", left: 71.8, top: 33.6, size: 5.0 },
+            { id: 11, label: "Espátula 5", type: "espatulas", left: 95.2, top: 32.1, size: 5.0 },
+            { id: 12, label: "Espátula 6", type: "espatulas", left: 83.9, top: 53.0, size: 5.0 },
+            { id: 13, label: "Espátula 7", type: "espatulas", left: 55.1, top: 57.7, size: 5.0 },
+            { id: 14, label: "Ranunculus Especie", type: "ranunculus", left: 85.0, top: 85.0, size: 5.0 } // Nuevo objetivo
         ];
 
         let activeId = 1;
@@ -189,10 +182,7 @@
                 const row = document.createElement('div');
                 row.className = `target-row ${t.id === activeId ? 'active' : ''}`;
                 row.onclick = () => { activeId = t.id; renderSelector(); };
-                row.innerHTML = `
-                    <span>${t.label}</span>
-                    <span class="coord-display">X:${t.left.toFixed(1)}% Y:${t.top.toFixed(1)}%</span>
-                `;
+                row.innerHTML = `<span>${t.label}</span><span class="coord-display">X:${t.left.toFixed(1)}% Y:${t.top.toFixed(1)}%</span>`;
                 list.appendChild(row);
             });
             updateOutput();
@@ -209,21 +199,13 @@
                 currentTarget.left = parseFloat(leftPerc.toFixed(1));
                 currentTarget.top = parseFloat(topPerc.toFixed(1));
             }
-
-            // Avanzar automáticamente al siguiente objeto para agilizar el trabajo
-            if (activeId < targets.length) {
-                activeId++;
-            } else {
-                activeId = 1; // loop
-            }
-            
+            activeId = activeId < targets.length ? activeId + 1 : 1;
             renderSelector();
         }
 
         function renderMarkers() {
             document.querySelectorAll('.cal-marker').forEach(el => el.remove());
             const container = document.getElementById('map-container');
-            
             targets.forEach(t => {
                 const marker = document.createElement('div');
                 marker.className = 'cal-marker';
@@ -238,11 +220,9 @@
             const cleanData = targets.map(t => {
                 return `    { id: ${t.id}, type: '${t.type}', left: ${t.left.toFixed(1)}, top: ${t.top.toFixed(1)}, size: ${t.size.toFixed(1)} }`;
             }).join(',\n');
-            
             document.getElementById('output-code').value = `const targetsConfig = [\n${cleanData}\n];`;
         }
 
-        // Inicializar
         renderSelector();
     </script>
 </body>
