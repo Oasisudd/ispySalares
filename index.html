@@ -27,45 +27,55 @@
             overflow: hidden;
             height: 100vh;
             display: flex;
-            flex-direction: column;
+            flex-direction: row; /* Layout horizontal: barra izquierda + mapa derecha */
         }
 
-        /* HUD Superior */
-        #hud {
+        /* BARRA LATERAL IZQUIERDA DE INFORMACIÓN */
+        #sidebar {
+            width: 320px;
             background-color: var(--azul-roca);
-            padding: 10px 20px;
+            border-right: 3px solid var(--ocre-tierra);
+            padding: 20px;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 3px solid var(--ocre-tierra);
+            flex-direction: column;
+            gap: 20px;
             flex-shrink: 0;
-            z-index: 10;
+            height: 100%;
+            overflow-y: auto; /* Resguardo por si la pantalla es muy baja en vertical */
         }
 
-        #hud h2 {
+        #sidebar h2 {
             color: #ffffff;
-            font-size: 1.3rem;
-            font-weight: 600;
-            letter-spacing: 1px;
+            font-size: 1.4rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            border-bottom: 2px solid var(--turquesa-agua);
+            padding-bottom: 8px;
+            text-align: center;
         }
 
-        .hud-panel {
+        .stats-container {
             display: flex;
-            align-items: center;
-            gap: 15px;
+            flex-direction: column;
+            gap: 10px;
         }
 
         .stat-box {
             background: rgba(0, 0, 0, 0.4);
-            padding: 6px 12px;
+            padding: 12px;
             border-radius: 6px;
-            font-size: 1.05rem;
+            font-size: 1.1rem;
             font-weight: bold;
-            border: 1px solid var(--ocre-tierra);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         #timer {
             color: var(--turquesa-agua);
+            border-color: var(--turquesa-agua);
         }
 
         #timer.warning {
@@ -75,28 +85,36 @@
             animation: pulse 1s infinite;
         }
 
-        /* Lista de Objetivos Inferior */
+        #score {
+            border-color: var(--ocre-tierra);
+            color: #ffffff;
+        }
+
+        /* LISTA VERTICAL DE OBJETIVOS */
         #objectives-list {
             display: flex;
-            gap: 12px;
-            overflow-x: auto;
-            background-color: var(--azul-oscuro);
-            padding: 8px 20px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            flex-shrink: 0;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 10px;
         }
 
         .obj-item {
             display: flex;
             align-items: center;
-            background: rgba(255,255,255,0.05);
-            padding: 4px 12px;
-            border-radius: 20px;
-            gap: 8px;
+            justify-content: space-between;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 8px 12px;
+            border-radius: 8px;
             border: 2px solid transparent;
             transition: all 0.3s;
-            opacity: 0.7;
-            font-size: 0.9rem;
+            opacity: 0.75;
+        }
+
+        .obj-item-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.95rem;
         }
 
         .obj-item.completed {
@@ -106,31 +124,34 @@
         }
 
         .obj-item img {
-            width: 28px;
-            height: 28px;
+            width: 32px;
+            height: 32px;
             object-fit: contain;
             background: #ffffff;
             border-radius: 50%;
             padding: 2px;
+            flex-shrink: 0;
         }
 
         .obj-count {
             font-weight: bold;
             color: var(--ocre-tierra);
+            font-family: monospace;
+            font-size: 1.1rem;
         }
 
         .obj-item.completed .obj-count {
             color: var(--turquesa-agua);
         }
 
-        /* Contenedor del Mapa - Ajuste estricto sin scroll vertical */
+        /* CONTENEDOR DEL MAPA (DERECHA) */
         #game-viewport {
             flex: 1;
             overflow-x: auto;
-            overflow-y: hidden;
+            overflow-y: hidden; /* Fijo estricto vertical */
             position: relative;
             background: #111;
-            width: 100%;
+            height: 100%;
         }
 
         #map-container {
@@ -145,7 +166,7 @@
             display: block;
         }
 
-        /* Zonas Interactivas Circulares Perfectas */
+        /* ZONAS INTERACTIVAS Y MARCADORES */
         .click-target {
             position: absolute;
             cursor: pointer;
@@ -167,7 +188,7 @@
             aspect-ratio: 1 / 1;
         }
 
-        /* Pantallas de Estado Overlays */
+        /* INTERFACES OVERLAY */
         .overlay-screen {
             position: absolute;
             top: 0;
@@ -185,7 +206,6 @@
         }
 
         .hidden { display: none !important; }
-
         h1 { font-size: 2.5rem; margin-bottom: 10px; color: var(--turquesa-agua); text-transform: uppercase; letter-spacing: 2px; }
         .subtitle { font-size: 1.1rem; color: var(--ocre-tierra); margin-bottom: 25px; font-weight: bold; }
 
@@ -202,13 +222,9 @@
             text-transform: uppercase;
             box-shadow: 0 4px 15px rgba(0, 169, 157, 0.3);
         }
+        .btn:hover { background-color: #00cabd; transform: translateY(-2px); }
 
-        .btn:hover {
-            background-color: #00cabd;
-            transform: translateY(-2px);
-        }
-
-        /* DISEÑO DEL CARRUSEL */
+        /* DISEÑO CARRUSEL FINAL */
         .carousel-wrapper {
             position: relative;
             width: 100%;
@@ -220,224 +236,143 @@
             margin-bottom: 20px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
-
-        .carousel-container {
-            overflow: hidden;
-            min-height: 220px;
-        }
-
-        .carousel-slide {
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            animation: fadeIn 0.4s ease-in-out;
-        }
-
-        .carousel-slide.active {
-            display: flex;
-        }
-
-        .slide-img-container {
-            background: #ffffff;
-            padding: 8px;
-            border-radius: 8px;
-            margin-bottom: 12px;
-            border: 2px solid var(--ocre-tierra);
-            display: inline-block;
-        }
-
-        .carousel-slide img {
-            height: 80px;
-            object-fit: contain;
-        }
-
-        .slide-title {
-            font-size: 1.4rem;
-            color: var(--turquesa-agua);
-            margin-bottom: 4px;
-        }
-
-        .slide-status {
-            font-size: 0.9rem;
-            font-weight: bold;
-            margin-bottom: 10px;
-            padding: 2px 10px;
-            border-radius: 12px;
-            display: inline-block;
-        }
-
+        .carousel-container { overflow: hidden; min-height: 220px; }
+        .carousel-slide { display: none; flex-direction: column; align-items: center; animation: fadeIn 0.4s ease-in-out; }
+        .carousel-slide.active { display: flex; }
+        .slide-img-container { background: #ffffff; padding: 8px; border-radius: 8px; margin-bottom: 12px; border: 2px solid var(--ocre-tierra); display: inline-block; }
+        .carousel-slide img { height: 80px; object-fit: contain; }
+        .slide-title { font-size: 1.4rem; color: var(--turquesa-agua); margin-bottom: 4px; }
+        .slide-status { font-size: 0.9rem; font-weight: bold; margin-bottom: 10px; padding: 2px 10px; border-radius: 12px; display: inline-block; }
         .status-found { background-color: rgba(0, 169, 157, 0.2); color: var(--turquesa-agua); }
         .status-missed { background-color: rgba(255, 123, 172, 0.2); color: var(--rosa-fauna); }
+        .slide-desc { font-size: 0.95rem; line-height: 1.45; color: #dddddd; text-align: justify; }
 
-        .slide-desc {
-            font-size: 0.95rem;
-            line-height: 1.45;
-            color: #dddddd;
-            white-space: normal;
-            text-align: justify;
-        }
-
-        .carousel-arrow {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background: transparent;
-            border: none;
-            color: var(--turquesa-agua);
-            font-size: 2.2rem;
-            cursor: pointer;
-            padding: 10px;
-            transition: color 0.2s;
-        }
-
+        .carousel-arrow { position: absolute; top: 50%; transform: translateY(-50%); background: transparent; border: none; color: var(--turquesa-agua); font-size: 2.2rem; cursor: pointer; padding: 10px; transition: color 0.2s; }
         .carousel-arrow:hover { color: #ffffff; }
         .arrow-left { left: 10px; }
         .arrow-right { right: 10px; }
 
-        @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.8; }
-            100% { opacity: 1; }
-        }
-
-        @keyframes scaleUp {
-            0% { width: 0; opacity: 0; }
-            100% { width: 45px; opacity: 1; }
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(5px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.8; } 100% { opacity: 1; } }
+        @keyframes scaleUp { 0% { width: 0; opacity: 0; } 100% { width: 45px; opacity: 1; } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
-    <div id="hud">
-        <h2>PROYECTO OASIS</h2>
-        <div class="hud-panel">
-            <div id="timer" class="stat-box">Tiempo: 30s</div>
-            <div id="score" class="stat-box">Encontrados: 0 / 13</div>
+    <div id="sidebar">
+        <h2>OASIS</h2>
+        
+        <div class="stats-container">
+            <div id="timer" class="stat-box"><span>Tiempo:</span><span>30s</span></div>
+            <div id="score" class="stat-box"><span>Progreso:</span><span>0 / 11</span></div>
         </div>
-    </div>
 
-    <div id="objectives-list">
-        <div class="obj-item" id="obj-trombolitos">
-            <img src="iSpyJUego-05.png" alt="Trombolitos">
-            <span>Trombolitos: <span class="obj-count" id="count-trombolitos">0/1</span></span>
-        </div>
-        <div class="obj-item" id="obj-lagartijas">
-            <img src="iSpyJUego-03.png" alt="Lagartijas">
-            <span>Lagartijas: <span class="obj-count" id="count-lagartijas">0/3</span></span>
-        </div>
-        <div class="obj-item" id="obj-tapete">
-            <img src="iSpyJUego-06.png" alt="Muestra de tapete">
-            <span>Muestra Mat: <span class="obj-count" id="count-tapete">0/1</span></span>
-        </div>
-        <div class="obj-item" id="obj-cuadrante">
-            <img src="iSpyJUego-04.png" alt="Cuadrante botánico">
-            <span>Cuadrante: <span class="obj-count" id="count-cuadrante">0/1</span></span>
-        </div>
-        <div class="obj-item" id="obj-espatulas">
-            <img src="iSpyJUego-02.png" alt="Espátulas">
-            <span>Espátulas: <span class="obj-count" id="count-espatulas">0/7</span></span>
+        <div id="objectives-list">
+            <div class="obj-item" id="obj-trombolitos">
+                <div class="obj-item-info"><img src="iSpyJUego-05.png"><span>Trombolitos</span></div>
+                <span class="obj-count" id="count-trombolitos">0/1</span>
+            </div>
+            <div class="obj-item" id="obj-lagartijas">
+                <div class="obj-item-info"><img src="iSpyJUego-03.png"><span>Lagartijas</span></div>
+                <span class="obj-count" id="count-lagartijas">0/3</span>
+            </div>
+            <div class="obj-item" id="obj-tapete">
+                <div class="obj-item-info"><img src="iSpyJUego-06.png"><span>Muestra Mat</span></div>
+                <span class="obj-count" id="count-tapete">0/1</span>
+            </div>
+            <div class="obj-item" id="obj-cuadrante">
+                <div class="obj-item-info"><img src="iSpyJUego-04.png"><span>Cuadrante</span></div>
+                <span class="obj-count" id="count-cuadrante">0/1</span>
+            </div>
+            <div class="obj-item" id="obj-espatulas">
+                <div class="obj-item-info"><img src="iSpyJUego-02.png"><span>Espátulas</span></div>
+                <span class="obj-count" id="count-espatulas">0/4</span>
+            </div>
+            <div class="obj-item" id="obj-ranunculus">
+                <div class="obj-item-info"><img src="iSpyJUego-07.png"><span>Ranunculus</span></div>
+                <span class="obj-count" id="count-ranunculus">0/1</span>
+            </div>
         </div>
     </div>
 
     <div id="game-viewport">
         <div id="map-container">
-            <img id="game-map" src="iSpyJUego-01.png" alt="Salar de Maricunga">
+            <img id="game-map" src="iSpyJUego-background.png" alt="Salar de Maricunga">
         </div>
     </div>
 
     <div id="start-screen" class="overlay-screen">
         <h1>Explora Maricunga</h1>
         <div class="subtitle">Desafío Express: 30 Segundos</div>
-        <p style="max-width: 500px; line-height: 1.5; margin-bottom: 25px; color: #b3b9c9; font-size: 1rem;">
-            Desplázate horizontalmente por el salar. Encuentra los instrumentos científicos y las especies nativas antes de que se agote el tiempo.
-        </p>
         <button class="btn" onclick="startGame()">Comenzar Muestreo</button>
     </div>
 
     <div id="end-screen" class="overlay-screen hidden">
         <h1 id="end-title">Muestreo Terminado</h1>
-        <p id="end-result" class="subtitle" style="margin-bottom: 15px;">Encontraste 0 de 13 objetos.</p>
-        
+        <p id="end-result" class="subtitle">Encontraste 0 de 11 objetos.</p>
         <div class="carousel-wrapper">
             <button class="carousel-arrow arrow-left" onclick="moveCarousel(-1)">&#10094;</button>
             <button class="carousel-arrow arrow-right" onclick="moveCarousel(1)">&#10095;</button>
             <div class="carousel-container" id="carousel-content"></div>
         </div>
-
         <button class="btn" onclick="resetGame()">Reiniciar Desafío</button>
     </div>
 
     <script>
-        // Tus Coordenadas Calibradas de Precisión
+        // Tus Coordenadas Reales Calibradas
         const targetsConfig = [
-            { id: 1, type: 'trombolitos', left: 76.4, top: 49.1, size: 5.5 },
-            { id: 2, type: 'lagartijas', left: 20.9, top: 83.1, size: 5.0 },
-            { id: 3, type: 'lagartijas', left: 29.8, top: 50.0, size: 5.0 },
-            { id: 4, type: 'lagartijas', left: 51.8, top: 39.7, size: 5.0 },
-            { id: 5, type: 'tapete', left: 57.4, top: 66.5, size: 5.5 },
-            { id: 6, type: 'cuadrante', left: 88.6, top: 74.7, size: 6.5 },
-            { id: 7, type: 'espatulas', left: 33.9, top: 33.2, size: 5.0 },
-            { id: 8, type: 'espatulas', left: 37.8, top: 90.5, size: 5.0 },
-            { id: 9, type: 'espatulas', left: 51.1, top: 93.0, size: 5.0 },
-            { id: 10, type: 'espatulas', left: 71.8, top: 33.6, size: 5.0 },
-            { id: 11, type: 'espatulas', left: 95.2, top: 32.1, size: 5.0 },
-            { id: 12, type: 'espatulas', left: 83.9, top: 53.0, size: 5.0 },
-            { id: 13, type: 'espatulas', left: 55.1, top: 57.7, size: 5.0 }
+            { id: 1, type: 'trombolitos', left: 75.9, top: 47.5, size: 5.5 },
+            { id: 2, type: 'lagartijas', left: 20.9, top: 83.0, size: 5.0 },
+            { id: 3, type: 'lagartijas', left: 29.9, top: 49.5, size: 5.0 },
+            { id: 4, type: 'lagartijas', left: 51.7, top: 39.8, size: 5.0 },
+            { id: 5, type: 'tapete', left: 57.8, top: 67.4, size: 5.5 },
+            { id: 6, type: 'cuadrante', left: 88.5, top: 74.6, size: 6.5 },
+            { id: 7, type: 'espatulas', left: 83.6, top: 53.6, size: 5.0 },
+            { id: 8, type: 'espatulas', left: 38.5, top: 90.1, size: 5.0 },
+            { id: 9, type: 'espatulas', left: 51.0, top: 93.1, size: 5.0 },
+            { id: 10, type: 'espatulas', left: 73.4, top: 35.1, size: 5.0 },
+            { id: 11, type: 'ranunculus', left: 83.3, top: 85.4, size: 5.0 }
         ];
 
         const itemsLibrary = {
-            trombolitos: { name: "Trombolitos", img: "iSpyJUego-05.png", desc: "Estructuras organo-sedimentarias complejas formadas por la actividad de comunidades de cianobacterias. Son verdaderos fósiles vivientes claves para estudiar las adaptaciones extremas y los orígenes biológicos en los salares de la Puna." },
-            lagartijas: { name: "Lagartijas Nativas", img: "iSpyJUego-03.png", desc: "Reptiles del género Liolaemus adaptados a la escasez hídrica, alta radiación ultravioleta y fuertes oscilaciones térmicas diarias. Cumplen un rol vital controlando las poblaciones de insectos en el ecosistema." },
-            tapete: { name: "Muestra de Tapete Microbiano", img: "iSpyJUego-06.png", desc: "Comunidades bentónicas estratificadas de microorganismos (bacterias y arqueas) que se desarrollan en las salmueras superficiales. Son responsables de gran parte del ciclo de nutrientes y carbono del salar." },
-            cuadrante: { name: "Cuadrante Botánico", img: "iSpyJUego-04.png", desc: "Marco estandarizado utilizado en terreno para delimitar áreas de observación ecológicas fijas. Permite cuantificar la densidad, cobertura y estado de salud de la flora nativa sin alterar el entorno del humedal." },
-            espatulas: { name: "Espátulas de Muestreo", img: "iSpyJUego-02.png", desc: "Herramienta científica de precisión empleada para recolectar costras salinas y sedimentos profundos de forma limpia, previniendo la contaminación externa de las muestras biológicas recolectadas." }
+            trombolitos: { name: "Trombolitos", img: "iSpyJUego-05.png", desc: "Estructuras organo-sedimentarias complejas formadas por comunidades de cianobacterias. Son fósiles vivientes claves para estudiar orígenes biológicos en la Puna." },
+            lagartijas: { name: "Lagartijas Nativas", img: "iSpyJUego-03.png", desc: "Reptiles del género Liolaemus adaptados a radiación UV extrema y oscilaciones térmicas diarias bruscas en el salar." },
+            tapete: { name: "Tapete Microbiano", img: "iSpyJUego-06.png", desc: "Comunidades microbianas bentónicas estratificadas en salmueras. Responsables del ciclo de nutrientes del ecosistema." },
+            cuadrante: { name: "Cuadrante Botánico", img: "iSpyJUego-04.png", desc: "Marco estandarizado de terreno para delimitar áreas ecológicas fijas y cuantificar cobertura de flora nativa sin alteración." },
+            espatulas: { name: "Espátulas de Muestreo", img: "iSpyJUego-02.png", desc: "Herramienta científica estéril para recolectar costras de sal y sedimentos profundos evitando contaminación externa." },
+            ranunculus: { name: "Ranunculus de Vegas", img: "iSpyJUego-07.png", desc: "Plantas perennes adaptadas a la alta humedad de las vegas y bofedales altoandinos. Son bioindicadores críticos de la presencia y salud de agua dulce superficial." }
         };
 
-        let gameActive = false;
-        let timeLeft = 30;
-        let timerInterval;
-        let foundIds = [];
-        let currentSlideIdx = 0;
-        
-        const counts = { trombolitos: 0, lagartijas: 0, tapete: 0, cuadrante: 0, espatulas: 0 };
-        const maxCounts = { trombolitos: 1, lagartijas: 3, tapete: 1, cuadrante: 1, espatulas: 7 };
-        const totalItems = 13;
+        let gameActive = false, timeLeft = 30, timerInterval, foundIds = [], currentSlideIdx = 0;
+        const counts = { trombolitos: 0, lagartijas: 0, tapete: 0, cuadrante: 0, espatulas: 0, ranunculus: 0 };
+        const maxCounts = { trombolitos: 1, lagartijas: 3, tapete: 1, cuadrante: 1, espatulas: 4, ranunculus: 1 };
+        const totalItems = 11;
 
         function initTargets() {
             const container = document.getElementById('map-container');
             document.querySelectorAll('.click-target').forEach(el => el.remove());
             document.querySelectorAll('.found-marker').forEach(el => el.remove());
-
             targetsConfig.forEach(target => {
                 const element = document.createElement('div');
                 element.className = 'click-target';
-                element.style.left = target.left + '%';
-                element.style.top = target.top + '%';
-                element.style.width = target.size + '%';
-                
+                element.style.left = target.left + '%'; element.style.top = target.top + '%'; element.style.width = target.size + '%';
                 element.onclick = (e) => handleTargetClick(e, target);
                 container.appendChild(element);
             });
         }
 
-        function startGame() {
-            document.getElementById('start-screen').classList.add('hidden');
-            gameActive = true;
-            initTargets();
-            startTimer();
+        function startGame() { 
+            document.getElementById('start-screen').classList.add('hidden'); 
+            gameActive = true; 
+            initTargets(); 
+            startTimer(); 
         }
 
         function startTimer() {
             const timerEl = document.getElementById('timer');
             timerInterval = setInterval(() => {
-                timeLeft--;
-                timerEl.innerText = `Tiempo: ${timeLeft}s`;
-                
+                timeLeft--; 
+                timerEl.querySelector('span:last-child').innerText = `${timeLeft}s`;
                 if (timeLeft <= 10) timerEl.classList.add('warning');
                 if (timeLeft <= 0) endGame(false);
             }, 1000);
@@ -445,113 +380,66 @@
 
         function handleTargetClick(e, target) {
             if (!gameActive || foundIds.includes(target.id)) return;
-
-            foundIds.push(target.id);
-            counts[target.type]++;
+            foundIds.push(target.id); counts[target.type]++;
             
             document.getElementById(`count-${target.type}`).innerText = `${counts[target.type]}/${maxCounts[target.type]}`;
-            if (counts[target.type] === maxCounts[target.type]) {
-                document.getElementById(`obj-${target.type}`).classList.add('completed');
-            }
-
-            document.getElementById('score').innerText = `Encontrados: ${foundIds.length} / ${totalItems}`;
-
+            if (counts[target.type] === maxCounts[target.type]) document.getElementById(`obj-${target.type}`).classList.add('completed');
+            document.getElementById('score').querySelector('span:last-child').innerText = `${foundIds.length} / ${totalItems}`;
+            
             const container = document.getElementById('map-container');
             const marker = document.createElement('div');
-            marker.className = 'found-marker';
-            marker.style.left = target.left + '%';
-            marker.style.top = target.top + '%';
-            marker.style.width = target.size + '%';
-            container.appendChild(marker);
-
-            e.target.style.display = 'none';
-
+            marker.className = 'found-marker'; marker.style.left = target.left + '%'; marker.style.top = target.top + '%'; marker.style.width = target.size + '%';
+            container.appendChild(marker); e.target.style.display = 'none';
             if (foundIds.length === totalItems) endGame(true);
         }
 
         function endGame(victory) {
-            gameActive = false;
-            clearInterval(timerInterval);
-            
-            const endScreen = document.getElementById('end-screen');
-            const endTitle = document.getElementById('end-title');
-            const endResult = document.getElementById('end-result');
-            
-            if (victory) {
-                endTitle.innerText = "¡Muestreo Exitoso!";
-                endTitle.style.color = "var(--turquesa-agua)";
-                endResult.innerText = `¡Espectacular! Encontraste los ${totalItems} elementos en ${30 - timeLeft} segundos.`;
-            } else {
-                endTitle.innerText = "Tiempo Agotado";
-                endTitle.style.color = "var(--rosa-fauna)";
-                endResult.innerText = `Recolectaste ${foundIds.length} de ${totalItems} objetos en el salar.`;
-            }
-            
-            buildCarousel();
-            endScreen.classList.remove('hidden');
+            gameActive = false; clearInterval(timerInterval);
+            document.getElementById('end-result').innerText = `Encontraste ${foundIds.length} de ${totalItems} objetos.`;
+            buildCarousel(); 
+            document.getElementById('end-screen').classList.remove('hidden');
         }
 
         function buildCarousel() {
-            const container = document.getElementById('carousel-content');
-            container.innerHTML = '';
-            currentSlideIdx = 0;
-
-            const types = ['trombolitos', 'lagartijas', 'tapete', 'cuadrante', 'espatulas'];
-            
+            const container = document.getElementById('carousel-content'); container.innerHTML = ''; currentSlideIdx = 0;
+            const types = ['trombolitos', 'lagartijas', 'tapete', 'cuadrante', 'espatulas', 'ranunculus'];
             types.forEach((type, idx) => {
                 const data = itemsLibrary[type];
-                const foundCount = counts[type];
-                const maxCount = maxCounts[type];
-                const isAllFound = foundCount === maxCount;
-
                 const slide = document.createElement('div');
                 slide.className = `carousel-slide ${idx === 0 ? 'active' : ''}`;
-                
                 slide.innerHTML = `
-                    <div class="slide-img-container">
-                        <img src="${data.img}" alt="${data.name}">
-                    </div>
+                    <div class="slide-img-container"><img src="${data.img}"></div>
                     <div class="slide-title">${data.name}</div>
-                    <div class="slide-status ${isAllFound ? 'status-found' : 'status-missed'}">
-                        ${isAllFound ? '✓ TODO ENCONTRADO' : `RECOLECTADO: ${foundCount}/${maxCount}`}
-                    </div>
-                    <div class="slide-desc">${data.desc}</div>
-                `;
+                    <div class="slide-status ${counts[type] === maxCounts[type] ? 'status-found' : 'status-missed'}">RECOLECTADO: ${counts[type]}/${maxCounts[type]}</div>
+                    <div class="slide-desc">${data.desc}</div>`;
                 container.appendChild(slide);
             });
         }
 
         function moveCarousel(step) {
-            const slides = document.querySelectorAll('.carousel-slide');
-            if (slides.length === 0) return;
-            
-            slides[currentSlideIdx].classList.remove('active');
-            currentSlideIdx += step;
-            
+            const slides = document.querySelectorAll('.carousel-slide'); if (slides.length === 0) return;
+            slides[currentSlideIdx].classList.remove('active'); currentSlideIdx += step;
             if (currentSlideIdx >= slides.length) currentSlideIdx = 0;
             if (currentSlideIdx < 0) currentSlideIdx = slides.length - 1;
-            
             slides[currentSlideIdx].classList.add('active');
         }
 
         function resetGame() {
-            timeLeft = 30;
-            foundIds = [];
-            for (let key in counts) counts[key] = 0;
-            
+            timeLeft = 30; foundIds = []; for (let key in counts) counts[key] = 0;
             const timerEl = document.getElementById('timer');
-            timerEl.innerText = "Tiempo: 30s";
             timerEl.classList.remove('warning');
-            document.getElementById('score').innerText = `Encontrados: 0 / ${totalItems}`;
+            timerEl.querySelector('span:last-child').innerText = "30s";
+            document.getElementById('score').querySelector('span:last-child').innerText = `0 / ${totalItems}`;
             
             document.querySelectorAll('.obj-item').forEach(el => el.classList.remove('completed'));
-            document.getElementById('count-trombolitos').innerText = "0/1";
+            document.getElementById('count-trombolitos').innerText = "0/1"; 
             document.getElementById('count-lagartijas').innerText = "0/3";
-            document.getElementById('count-tapete').innerText = "0/1";
+            document.getElementById('count-tapete').innerText = "0/1"; 
             document.getElementById('count-cuadrante').innerText = "0/1";
-            document.getElementById('count-espatulas').innerText = "0/7";
-
-            document.getElementById('end-screen').classList.add('hidden');
+            document.getElementById('count-espatulas').innerText = "0/4"; 
+            document.getElementById('count-ranunculus').innerText = "0/1";
+            
+            document.getElementById('end-screen').classList.add('hidden'); 
             startGame();
         }
     </script>
