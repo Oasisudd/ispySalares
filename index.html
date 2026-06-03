@@ -386,9 +386,9 @@
         </div>
 
         <div id="objectives-list">
-            <div class="obj-item" id="obj-trombolitos">
-                <div class="obj-item-info"><img src="iSpyJUegoV2-05.png"><span>Trombolitos</span></div>
-                <span class="obj-count" id="count-trombolitos">0/1</span>
+            <div class="obj-item" id="obj-oncolitos">
+                <div class="obj-item-info"><img src="iSpyJUegoV2-05.png"><span>Oncolitos</span></div>
+                <span class="obj-count" id="count-oncolitos">0/1</span>
             </div>
             <div class="obj-item" id="obj-lagartijas">
                 <div class="obj-item-info"><img src="iSpyJUegoV2-03.png"><span>Lagartijas</span></div>
@@ -442,7 +442,7 @@
 
     <script>
         const targetsConfig = [
-            { id: 1, type: 'trombolitos', left: 75.9, top: 47.5, size: 5.5 },
+            { id: 1, type: 'oncolitos', left: 75.9, top: 47.5, size: 5.5 },
             { id: 2, type: 'lagartijas', left: 20.9, top: 83.0, size: 5.0 },
             { id: 3, type: 'lagartijas', left: 29.9, top: 49.5, size: 5.0 },
             { id: 4, type: 'lagartijas', left: 51.7, top: 39.8, size: 5.0 },
@@ -456,7 +456,7 @@
         ];
 
         const itemsLibrary = {
-            trombolitos: { name: "Trombolitos", img: "iSpyJUegoV2-05.png", realImg: "trombolitos.png", desc: "Estructuras organo-sedimentarias complejas formadas por comunidades de cianobacterias. Son fósiles vivientes claves para estudiar orígenes biológicos en la Puna." },
+            oncolitos: { name: "Oncolitos", img: "iSpyJUegoV2-05.png", realImg: "oncolitos.png", desc: "Estructuras organo-sedimentarias complejas formadas por comunidades de cianobacterias. Son fósiles vivientes claves para estudiar orígenes biológicos en la Puna." },
             lagartijas: { name: "Lagartijas Nativas", img: "iSpyJUegoV2-03.png", realImg: "lagartija.png", desc: "Reptiles del género Liolaemus adaptados a radiación UV extrema y oscilaciones térmicas diarias bruscas en el salar." },
             tapete: { name: "Tapete Microbiano", img: "iSpyJUegoV2-06.png", realImg: "tapete.png", desc: "Comunidades microbianas bentónicas estratificadas en salmueras. Responsables del ciclo de nutrientes del ecosistema." },
             cuadrante: { name: "Cuadrante Botánico", img: "iSpyJUegoV2-04.png", realImg: "cuadrante.png", desc: "Marco estandarizado de terreno para delimitar áreas ecológicas fijas y cuantificar cobertura de flora nativa sin alteración." },
@@ -465,8 +465,8 @@
         };
 
         let gameActive = false, timeLeft = 30, timerInterval, foundIds = [], currentSlideIdx = 0;
-        const counts = { trombolitos: 0, lagartijas: 0, tapete: 0, cuadrante: 0, espatulas: 0, ranunculus: 0 };
-        const maxCounts = { trombolitos: 1, lagartijas: 3, tapete: 1, cuadrante: 1, espatulas: 4, ranunculus: 1 };
+        const counts = { oncolitos: 0, lagartijas: 0, tapete: 0, cuadrante: 0, espatulas: 0, ranunculus: 0 };
+        const maxCounts = { oncolitos: 1, lagartijas: 3, tapete: 1, cuadrante: 1, espatulas: 4, ranunculus: 1 };
         const totalItems = 11;
 
         function initTargets() {
@@ -523,7 +523,7 @@
 
         function buildCarousel() {
             const container = document.getElementById('carousel-content'); container.innerHTML = ''; currentSlideIdx = 0;
-            const types = ['trombolitos', 'lagartijas', 'tapete', 'cuadrante', 'espatulas', 'ranunculus'];
+            const types = ['oncolitos', 'lagartijas', 'tapete', 'cuadrante', 'espatulas', 'ranunculus'];
             
             types.forEach((type, idx) => {
                 const data = itemsLibrary[type];
@@ -564,7 +564,7 @@
             document.getElementById('score').querySelector('span:last-child').innerText = `0 / ${totalItems}`;
             
             document.querySelectorAll('.obj-item').forEach(el => el.classList.remove('completed'));
-            document.getElementById('count-trombolitos').innerText = "0/1"; 
+            document.getElementById('count-oncolitos').innerText = "0/1"; 
             document.getElementById('count-lagartijas').innerText = "0/3";
             document.getElementById('count-tapete').innerText = "0/1"; 
             document.getElementById('count-cuadrante').innerText = "0/1";
